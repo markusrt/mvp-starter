@@ -9,10 +9,11 @@
 - Approval: implementation branch, push, and PR authorized by this assignment.
   No merge, deploy, new remote resources, or template-setting change authorized.
 - Human acceptance: **none**. Automated success never substitutes for approval.
-- Baseline commit: `f875639` (initial plan). Implementation/handoff are in this
-  change; use `git log -1` for its final hash rather than a self-referential hash.
-- Worktree at this handoff: intended scaffold/docs only, pending authorized
-  commit; dependency/build/browser artifacts ignored. Inspect actual
+- Implementation commit: `ad5a7c0` (baseline `f875639`, initial plan).
+  Later review/handoff updates follow; use `git log -1` for the final hash.
+- Worktree checked clean after the implementation commit; this handoff and
+  verified CI pin correction are pending the final authorized commit.
+  Dependency/build/browser artifacts ignored. Inspect actual
   `git status --short` and recent commits on resume; this snapshot is not a claim
   that future worktrees are clean.
 
@@ -25,7 +26,7 @@ Canonical requirements: [SPEC.md](SPEC.md). No competing product spec.
 | S1–S2 | Automatically verified: pure domain tests and desktop/mobile browser create/check/reload/delete flows. |
 | S3–S4 | Automatically verified: invalid JSON/shape/version/duplicate IDs, denied access, quota, write validation, own-key reset, blocked UI, cancellation, failed reset, retained input and retry. |
 | S5 | Implemented: semantic labels/status/errors, visible focus, responsive layout. Browser checks use keyboard submit and desktop/Pixel 7 viewport. Mobile screenshot inspected; not a complete accessibility audit or human acceptance. |
-| S6 | Local full gate verified. Pinned workflow, frozen install and failure artifacts implemented; hosted project CI not yet observed at this snapshot. |
+| S6 | Local full gate verified. Pinned workflow, frozen install and failure artifacts implemented; hosted CI reports `action_required` with zero jobs, pending approval. |
 | S7 | Canonical rules, bootstrap, brief fields, three ADRs, independent-project checklist and handoff implemented; human review pending. |
 
 Commands actually run in this environment on 2026-10-16:
@@ -49,8 +50,17 @@ Commands actually run in this environment on 2026-10-16:
 
 Known non-failing build output: two upstream Zod comments contain pure annotations
 Rollup cannot interpret; Rollup removes those comments and the build succeeds.
-Security/code review results are recorded below when available; do not infer
-hosted CI or review success from local test success.
+CodeQL completed for JavaScript and Actions with **zero alerts**. The automated
+review wrapper's model was unavailable, despite its success heading; a separate
+read-only review completed with **no significant issues found**. Changed-file
+secret scanning found none. All four workflow action pins were checked against
+their upstream release tags; the pnpm action pin was corrected to v4.1.0.
+
+Hosted [Verify run 38950255088](https://github.com/markusrt/mvp-starter/actions/runs/38950255088)
+reports **`action_required`**, zero jobs. GitHub MCP log lookup confirmed there
+are no job logs; approval is needed before hosted execution can be evaluated.
+This is not a hosted pass and checks were not bypassed. The PR is
+[PR #1](https://github.com/markusrt/mvp-starter/pull/1).
 
 ## Start / review / resume
 
