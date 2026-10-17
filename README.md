@@ -21,7 +21,11 @@ behavior. See [docs/STATUS.md](docs/STATUS.md) for verification and pending huma
   No license grant is invented by these instructions; select one only with
   authority to do so.
 - [ ] Fill in the bootstrap brief, confirm acceptance criteria, and initialize
-  project status from actual files/evidence, not inherited completion claims.
+  the product: replace the demo spec in `docs/SPEC.md` with the prompted
+  use-case's requirements and new IDs, and reset `docs/STATUS.md` to product C1
+  with actual evidence, not inherited demo completion/approval or review gates.
+  Retain tooling/process rules; adapt or remove demo code/tests as product
+  slices replace them. Do not reset an already initialized product on resume.
   Reassess assignment permissions: source-repository authorization is not copied.
 
 ## First run and local development

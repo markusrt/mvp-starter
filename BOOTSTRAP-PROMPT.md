@@ -17,9 +17,28 @@ START / RESUME
 Work from the repository, not remembered chat or vendor-specific memory. Read
 CONSTITUTION.md -> AGENTS.md -> docs/STATUS.md -> docs/SPEC.md -> relevant ADRs.
 Inspect capabilities, branch/worktree, existing implementation, commands, and
-prior evidence before editing. Preserve existing work. If starting fresh,
-populate the canonical docs from the brief; if resuming, reconcile docs with
-actual files, retain stable IDs, and continue the recorded next action.
+prior evidence before editing. Preserve existing work. Distinguish initializing
+a new product from resuming an already initialized product.
+
+NEW PRODUCT INITIALIZATION
+The inherited docs/SPEC.md describes a disposable starter demo, not requirements
+for the prompted product. Once authorized to initialize a new product, rewrite
+that same canonical spec from IDEA and clarified requirements: users, problem,
+primary workflow, acceptance criteria with new product IDs, non-goals, risks,
+and assumptions. Replace demo-specific requirements rather than carrying the
+task-list workflow, storage schema, or demo limits into the product by default.
+Reset docs/STATUS.md to the new product's C1 scope, actual evidence, permissions,
+questions, and next action. Do not inherit demo completion, test results, human
+acceptance, or starter-review gates as product progress or product blockers.
+Keep the reusable tooling, architecture boundaries, and process rules. Adapt or
+remove demo-only code and tests as product slices replace them; retain relevant
+quality/failure coverage and add tests for the new workflow. Preserve unrelated
+user work and never clear existing browser data as part of this transition.
+
+EXISTING PRODUCT RESUME
+If a product has already been initialized, do not rewrite its spec or reset its
+status from the starter. Reconcile docs with actual files, retain that product's
+stable IDs and history, and continue its recorded next action within its gates.
 Do not reset or regenerate the project merely because context is missing.
 
 BRIEF AND DECISIONS

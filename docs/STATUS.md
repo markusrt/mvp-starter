@@ -2,7 +2,7 @@
 
 ## Checkpoint and authorization
 
-- Updated: 2026-10-16.
+- Updated: 2026-10-17.
 - Repository/branch: `markusrt/mvp-starter`, `copilot/populate-mvp-starter`.
 - Checkpoint: **starter demo implemented; awaiting human review**. This is not C1
   acceptance of a new product. Product C1–C3 have not begun.
@@ -11,13 +11,27 @@
 - Human acceptance: **none**. Automated success never substitutes for approval.
 - Implementation commit: `ad5a7c0` (baseline `f875639`, initial plan).
   Later review/handoff updates follow; use `git log -1` for the final hash.
-- Worktree checked clean after the implementation commit; this handoff and
-  verified CI pin correction are pending the final authorized commit.
+- Worktree checked clean at `a20ea96` before this documentation-only follow-up.
+  The bootstrap/spec/agent guide/README/status clarification is pending commit.
   Dependency/build/browser artifacts ignored. Inspect actual
   `git status --short` and recent commits on resume; this snapshot is not a claim
   that future worktrees are clean.
 
 ## Requirements and actual evidence
+
+2026-10-17 follow-up (S7): clarified that authorized new-product initialization
+replaces the demo-specific canonical spec and status with the prompted use-case,
+new product IDs, and C1 scope. Reuse tooling/boundaries/process, adapt or remove
+demo-only code/tests with replacement coverage, and inherit neither demo evidence
+nor starter-review gates. Existing products retain their IDs/history and pending
+gates on resume. This PR still contains the working starter demo; no product was
+initialized and no human acceptance is inferred from the review conversation.
+
+Validation for this follow-up: manually cross-checked initialization versus
+resume guidance in all five changed documents; `git diff --check` passed.
+Application tests/build/browser checks were not rerun: only Markdown changed,
+with no documentation-specific test suite. The application results below are
+the earlier 2026-10-16 evidence, not newly executed checks.
 
 Canonical requirements: [SPEC.md](SPEC.md). No competing product spec.
 

@@ -29,9 +29,17 @@ checkpoint decisions, and next action; do not infer execution from this plan.
 | S6 | Frozen install and nonempty `pnpm verify` pass; no cycles or forbidden imports; CI uses identical gate with failure artifacts. | Local gate verified; hosted CI pending |
 | S7 | Canonical docs support brief → C1–C3 → exact restart/handoff without chat; copyable prompt includes all product inputs and gates. | Implemented; human review pending |
 
-Keep these IDs stable when updating scope. Add product requirements with new IDs;
-do not quietly redefine completed requirements. Record evidence against IDs in
-status, including failed or unavailable checks and outstanding human decisions.
+S1–S7 describe this starter only. During authorized initialization of a new
+product, replace this canonical spec with requirements derived from the prompted
+use-case and assign new product IDs; do not retain demo-specific requirements
+as product obligations or inherit their verification/acceptance states. Reset
+the accompanying status to the product's C1 scope and actual evidence, following
+`BOOTSTRAP-PROMPT.md`. Keep reusable tooling, boundaries, and process rules.
+
+Once a product is initialized, keep its IDs stable when updating scope; do not
+quietly redefine completed requirements or restart its spec on resume. Record
+evidence against IDs in status, including failed or unavailable checks and
+outstanding human decisions.
 
 ## Storage contract (S2–S4)
 

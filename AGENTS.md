@@ -19,6 +19,13 @@ authorized scope. Do not infer completion from a document or prior conversation:
 compare claims with files and recorded evidence. Resume from the next action in
 status; portable repository documents, not chat history, are the handoff.
 
+For authorized initialization of a new product from this starter, follow
+`BOOTSTRAP-PROMPT.md`'s **NEW PRODUCT INITIALIZATION** instructions: replace the
+demo spec/status with the prompted product's requirements and C1 state, keeping
+tooling and process rules. Demo evidence/approval is not product progress, and
+inherited starter-review gates are not product blockers. For an existing
+product, preserve its requirements/history and honor its pending gates instead.
+
 ## Autonomy and gates
 
 - Independently perform reversible implementation, local inspection, and checks
