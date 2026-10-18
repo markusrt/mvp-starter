@@ -38,6 +38,15 @@ updated. Basis: grep of specify-cli 1.2.1 scripts found no content parsing, and
 the skills reference only the English markers listed in ADR 005. Not run: no
 non-English `/speckit-*` session yet.
 
+2026-10-18 routing sanity check (owner request): `scripts/check-model-routing.mjs`
+(`pnpm models:check`) and an AGENTS.md procedure (probe before the first
+implementation task, table at every GATE, stop on mismatch). Tested on real
+local transcripts: this Opus-only session gives exit 0, and exit 1 with
+`--require-agent` ("speckit-implementer (never ran)"). A Unity session with
+Explore subagents on Haiku 4.5 gives a correct mismatch for its Sonnet 4.6
+main session and the wrong Explore expectation (exit 1). An unknown project
+gives exit 2. Biome passes.
+
 2026-10-18 model routing (owner request, ADR 006): `.claude/agents/
 speckit-implementer.md` (`sonnet`, effort `medium`) implements `[ROUTINE]` tasks.
 The main session (`opus`) keeps planning, untagged tasks, review, verify,

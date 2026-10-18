@@ -60,6 +60,22 @@ Other agents: use their subagent/model mechanism if they have one, otherwise
 implement all tasks in the main session. Routing never relaxes the rules:
 delegated work meets the same tests, boundaries, and checks.
 
+Routing sanity check (Claude Code). `pnpm models:check` reads this session's
+local transcripts read-only and reports the models that actually answered, per
+agent. Exit 0 = routing OK, 1 = mismatch, 2 = no transcript.
+
+1. Before the first implementation task of a feature, delegate a harmless
+   read-only probe to `speckit-implementer` (for example: "Read package.json and
+   report `engines.node`. Make no edits."), then run
+   `pnpm models:check --require-agent`. It must show the main session on
+   `opus` and `speckit-implementer` on `sonnet`.
+2. At every GATE, run `pnpm models:check` and record its table in
+   `docs/STATUS.md` with the delegated task IDs.
+3. On a mismatch, stop and report it with the table. Do not silently continue
+   on a single model. Typical causes: the session wasn't started with
+   `--model opus`; `CLAUDE_CODE_SUBAGENT_MODEL_FORCE` is set; or an organization
+   `availableModels` allowlist blocks the model.
+
 ### Language (constitution XII, ADR 005)
 
 | What | Language |
@@ -158,7 +174,8 @@ at pending human decisions; silence is not acceptance.
 Exact handoff procedure (run at every GATE task):
 1. Inspect `git status --short`, branch, and recent commits; preserve existing work.
 2. Reconcile implemented spec IDs with files, ticked tasks, and checks. Run
-   `pnpm verify` and record any failure or check not run.
+   `pnpm verify` and record any failure or check not run. Run
+   `pnpm models:check` and record which tasks were delegated.
 3. Start/restart the server using README commands; check the real review URL and
    its access scope. Never promise process survival or remote access from loopback.
 4. Update `docs/STATUS.md` with feature, checkpoint, approval, evidence,

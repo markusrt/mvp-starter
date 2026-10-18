@@ -38,6 +38,15 @@ is the default, so a missing tag costs money, never quality.
 Option 1 stays available for a fully unattended run of an already clarified
 feature; it is not part of the default flow.
 
+Verification: `scripts/check-model-routing.mjs` (`pnpm models:check`) reads
+Claude Code's local transcripts. The main session is in
+`~/.claude/projects/<cwd>/<session>.jsonl`; subagents are in
+`<session>/subagents/agent-*.jsonl` with `agentType` in `*.meta.json`. It
+reports the models that actually answered, not a model's self-description,
+and fails on mismatch. It depends on Claude Code's transcript layout (observed
+2026-10-18), which is not a documented interface: if the layout changes, the
+check exits 2 rather than passing falsely.
+
 ## Consequences
 
 Routine coding runs at about half the Opus price, faster, with less main-context
