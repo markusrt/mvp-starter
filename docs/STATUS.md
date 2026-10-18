@@ -20,6 +20,27 @@
 
 ## What changed and actual evidence
 
+2026-10-18 init command (owner request, pushed directly to `main` at the owner's
+explicit instruction): README, BOOTSTRAP-PROMPT.md, and AGENTS.md now say
+`specify init --here --force --integration claude --script sh`, and
+`.gitattributes` pins `*.sh` to LF. Evidence: on a fresh copy of `main`
+(specify-cli 1.2.1, Windows), the command ran without a prompt ("--force
+supplied: skipping confirmation and proceeding with merge"), modified no
+tracked file, added only Spec Kit files with `.specify/scripts/bash/`, and the
+bash resolver returned the GATE override. A Node byte count found the
+generated scripts already LF (CR=0). Earlier shell-based CR checks reported
+CRLF wrongly. `.gitattributes` protects clones with `core.autocrlf=true`; in a
+test commit, index and worktree stayed LF.
+
+2026-10-18 merge and first deployment: PR #1 was squash-merged as `b83cbc7`
+(head guard `77128c6`). `main` run
+[39122454892](https://github.com/markusrt/mvp-starter/actions/runs/39122454892):
+verify, pages-check, and deploy succeeded. `https://markusrt.github.io/mvp-starter/`
+returned 200; JS and CSS under `/mvp-starter/assets/` returned 200; deep links
+get `404.html` (status 404, SPA fallback). A Playwright smoke test against the
+live URL rendered the heading, saved an item, kept it after reload, and had no
+page errors. `auto-merge` is still not exercised end to end.
+
 2026-10-18 Spec Kit migration:
 
 - Constitution moved to `.specify/memory/constitution.md` in Spec Kit format,
@@ -165,8 +186,8 @@ Fresh agent: read constitution → AGENTS → this status → active `specs/` fe
 - `.sh` scripts are generated locally per product by `specify init`
   (`--script sh|ps`); the starter commits none.
 - No license chosen. The repository is public and marked as a template.
-- Ship flow not yet exercised end to end: the first `main` deployment happens
-  with this merge, and `auto-merge` has not run.
+- Ship flow: the `main` deployment is verified live; `auto-merge` has not run
+  end to end yet.
 - **Exact next action:** owner creates the first product repository (`kandidu`)
   from this template, runs `specify init --here --integration claude`, and starts
   `claude --model opus` with the Kandidu bootstrap prompt.

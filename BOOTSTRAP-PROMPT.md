@@ -1,7 +1,8 @@
 # Copyable bootstrap prompt
 
 Prerequisite (human, once per product repository): run
-`specify init --here --integration <agent>` and commit the result (see README).
+`specify init --here --force --integration claude --script sh` (other agents:
+swap `claude`; see README) and commit the result.
 Then copy the complete block below into that agent. Replace bracketed inputs;
 leave optional fields unspecified when unknown.
 

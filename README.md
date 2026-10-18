@@ -27,12 +27,24 @@ verification and pending human review.
 - [ ] Install Spec Kit once per machine (needs Python and
   [uv](https://docs.astral.sh/uv/)): `uv tool install specify-cli`. Evaluated with
   1.2.1; check with `specify --version`.
-- [ ] In the new repository, run
-  `specify init --here --integration <agent>` (for example `claude`, `codex`,
-  `copilot`, `cursor-agent`; `specify integration list` shows all). It adds the
-  agent's `speckit-*` commands and `.specify/` scripts/templates, and keeps the
-  shipped constitution and tasks-template override. Commit the result so any
-  later agent can resume. Don't install the git-branching extension unless
+- [ ] In the new repository, run:
+
+  ```sh
+  specify init --here --force --integration claude --script sh
+  ```
+
+  - `--force` answers "merge with existing files?" with yes. The merge only
+    adds files: it keeps the shipped constitution, the tasks-template override,
+    the subagents, and every tracked file (verified with specify-cli 1.2.1).
+  - `--script sh` generates bash scripts. They run in Git Bash (which Claude
+    Code uses on Windows) and on Linux/macOS agents and runners. `ps` is
+    Windows-only in practice. `.gitattributes` keeps `*.sh` at LF even for
+    clones with `core.autocrlf=true`.
+  - For another agent, swap `claude` for its key (`codex`, `copilot`,
+    `cursor-agent`, …; `specify integration list` shows all).
+
+  Check that `git status --short` lists only new files (`??`), then commit the
+  result so any later agent can resume. Don't install the git-branching extension unless
   branch creation is authorized.
 - [ ] Paste the [bootstrap prompt](BOOTSTRAP-PROMPT.md) with your idea. The
   agent runs specify → clarify → plan → tasks → analyze → implement and stops

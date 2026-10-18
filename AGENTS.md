@@ -17,8 +17,8 @@ Read, in order:
 Inspect the worktree, branch, available tools, package scripts, and existing work.
 Check that Spec Kit is initialized: `.specify/scripts/` and your agent's
 `speckit-*` commands/skills exist. If they are missing, ask the human to run
-`specify init --here --integration <agent>` (see README); do not hand-write
-Spec Kit artifacts. Do not infer completion from a document or prior
+`specify init --here --force --integration claude --script sh` (see README);
+do not hand-write Spec Kit artifacts. Do not infer completion from a document or prior
 conversation: compare claims with files and recorded evidence. Resume from the
 next action in status; repository documents, not chat history, are the handoff.
 
