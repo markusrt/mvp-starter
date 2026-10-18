@@ -67,7 +67,7 @@ explicit human decision recorded in `docs/STATUS.md`.
 
 - [ ] T001 Rename package/page title/storage key for the product per plan.md
 - [ ] T002 Remove or replace starter demo code and tests that this feature supersedes (keep quality/failure coverage)
-- [ ] T003 Add the typed message catalog for the default locale in src/ui/i18n/ and set `<html lang>` in index.html
+- [ ] T003 Make the spec language the default locale: add its catalog in src/ui/i18n/, set `defaultLocale`, and update `lang` in index.html
 
 ---
 

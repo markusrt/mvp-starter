@@ -41,7 +41,7 @@ describe("browser persistence", () => {
     '{"version":1,"items":[],"unexpected":true}',
   ])("preserves invalid or incompatible data: %s", async (raw) => {
     const { store, data } = fixture(raw);
-    await expect(store.load()).rejects.toThrow("preserved");
+    await expect(store.load()).rejects.toMatchObject({ code: "data-invalid" });
     expect(data.get(STORAGE_KEY)).toBe(raw);
   });
 
@@ -49,9 +49,9 @@ describe("browser persistence", () => {
     const store = createBrowserStore(() => {
       throw new Error("Denied");
     });
-    await expect(store.load()).rejects.toThrow("Cannot read");
-    await expect(store.save([])).rejects.toThrow("Not saved");
-    await expect(store.reset()).rejects.toThrow("Reset failed");
+    await expect(store.load()).rejects.toMatchObject({ code: "read-failed" });
+    await expect(store.save([])).rejects.toMatchObject({ code: "save-failed" });
+    await expect(store.reset()).rejects.toMatchObject({ code: "reset-failed" });
   });
 
   it("reports quota failure without overwriting saved data", async () => {
@@ -62,7 +62,7 @@ describe("browser persistence", () => {
     const store = createBrowserStore(() => storage);
     await expect(
       store.save([{ id: "one", title: "New", completed: false }]),
-    ).rejects.toThrow("full");
+    ).rejects.toMatchObject({ code: "save-failed" });
     expect(data.get(STORAGE_KEY)).toBe('{"version":1,"items":[]}');
   });
 

@@ -3,11 +3,14 @@ import {
   createItem,
   type DemoItem,
   deleteItem,
+  TITLE_MAX,
   toggleItem,
 } from "../domain/items";
 import type { DemoStore } from "../storage/port";
+import { errorMessage, useMessages } from "./i18n";
 
 export function App({ store }: { store: DemoStore }) {
+  const m = useMessages();
   const [items, setItems] = useState<DemoItem[]>([]);
   const [title, setTitle] = useState("");
   const [ready, setReady] = useState(false);
@@ -28,9 +31,9 @@ export function App({ store }: { store: DemoStore }) {
     try {
       setItems(await store.load());
       setReady(true);
-      setNotice("Demo loaded from this browser.");
+      setNotice(m.loaded);
     } catch (cause) {
-      setError(message(cause));
+      setError(errorMessage(cause, m));
     } finally {
       locked.current = false;
       setBusy(false);
@@ -53,10 +56,10 @@ export function App({ store }: { store: DemoStore }) {
       const updated = next();
       await store.save(updated);
       setItems(updated);
-      setNotice("Saved in this browser.");
+      setNotice(m.saved);
       after?.();
     } catch (cause) {
-      setError(message(cause));
+      setError(errorMessage(cause, m));
     } finally {
       locked.current = false;
       setBusy(false);
@@ -76,9 +79,9 @@ export function App({ store }: { store: DemoStore }) {
       setTitle("");
       setReady(true);
       setConfirmReset(false);
-      setNotice("Demo data reset. Other site storage was not changed.");
+      setNotice(m.resetDone);
     } catch (cause) {
-      setError(message(cause));
+      setError(errorMessage(cause, m));
     } finally {
       locked.current = false;
       setBusy(false);
@@ -88,20 +91,14 @@ export function App({ store }: { store: DemoStore }) {
   return (
     <main>
       <header>
-        <p className="eyebrow">Reusable starter · demo only</p>
-        <h1>A small idea, saved locally.</h1>
-        <p>
-          Create, check, and delete sample items to try the harness. This is not
-          your product yet.
-        </p>
+        <p className="eyebrow">{m.eyebrow}</p>
+        <h1>{m.heading}</h1>
+        <p>{m.intro}</p>
       </header>
       <section aria-labelledby="demo-heading" aria-busy={busy}>
-        <h2 id="demo-heading">Demo items</h2>
-        <p>
-          Discardable sample data only. No account, server, or backup. Use this
-          browser and origin to return to your items.
-        </p>
-        <p role="status">{busy ? "Working…" : notice}</p>
+        <h2 id="demo-heading">{m.listHeading}</h2>
+        <p>{m.listNote}</p>
+        <p role="status">{busy ? m.working : notice}</p>
         {error && (
           <p role="alert" className="error">
             {error}
@@ -109,7 +106,7 @@ export function App({ store }: { store: DemoStore }) {
         )}
         {!ready && !busy && (
           <button type="button" onClick={() => void load()}>
-            Retry loading
+            {m.retryLoading}
           </button>
         )}
         <form
@@ -121,25 +118,23 @@ export function App({ store }: { store: DemoStore }) {
             );
           }}
         >
-          <label htmlFor="title">New demo item</label>
+          <label htmlFor="title">{m.newItemLabel}</label>
           <div className="entry">
             <input
               ref={input}
               id="title"
               value={title}
-              maxLength={120}
+              maxLength={TITLE_MAX}
               required
               disabled={!ready || busy}
               onChange={(event) => setTitle(event.target.value)}
             />
             <button disabled={!ready || busy || !title.trim()} type="submit">
-              Add item
+              {m.addItem}
             </button>
           </div>
         </form>
-        {ready && items.length === 0 && (
-          <p>No demo items yet. Add one above to begin.</p>
-        )}
+        {ready && items.length === 0 && <p>{m.empty}</p>}
         {ready && (
           <ul>
             {items.map((item) => (
@@ -158,10 +153,10 @@ export function App({ store }: { store: DemoStore }) {
                 <button
                   type="button"
                   disabled={busy}
-                  aria-label={`Delete ${item.title}`}
+                  aria-label={m.deleteItemLabel(item.title)}
                   onClick={() => void save(() => deleteItem(items, item.id))}
                 >
-                  Delete
+                  {m.deleteItem}
                 </button>
               </li>
             ))}
@@ -171,18 +166,16 @@ export function App({ store }: { store: DemoStore }) {
       <footer>
         {confirmReset ? (
           <div>
-            <p>
-              Delete all demo items from this browser? This cannot be undone.
-            </p>
+            <p>{m.resetPrompt}</p>
             <button type="button" disabled={busy} onClick={() => void reset()}>
-              Confirm reset demo
+              {m.confirmReset}
             </button>{" "}
             <button
               type="button"
               disabled={busy}
               onClick={() => setConfirmReset(false)}
             >
-              Cancel
+              {m.cancel}
             </button>
           </div>
         ) : (
@@ -191,20 +184,11 @@ export function App({ store }: { store: DemoStore }) {
             disabled={busy}
             onClick={() => setConfirmReset(true)}
           >
-            Reset demo data
+            {m.resetData}
           </button>
         )}
-        <p>
-          Local persistence does not guarantee offline page loading. Review the
-          project docs before building your own idea.
-        </p>
+        <p>{m.footerNote}</p>
       </footer>
     </main>
   );
-}
-
-function message(cause: unknown): string {
-  return cause instanceof Error
-    ? cause.message
-    : "Unexpected failure. Please retry.";
 }

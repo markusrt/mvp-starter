@@ -36,10 +36,19 @@ message catalog. AGENTS.md, BOOTSTRAP-PROMPT.md (SPEC/UI LANGUAGE fields),
 README, and the tasks override (catalog setup T003, C3 localization pass)
 updated. Basis: grep of specify-cli 1.2.1 scripts found no content parsing, and
 the skills reference only the English markers listed in ADR 005. Not run: no
-non-English `/speckit-*` session yet. Known gap: the demo skeleton hardcodes
-English UI text and throws user-facing messages from domain/storage, which
-violates XII until the first feature replaces it, or until the skeleton is
-refactored if the owner wants that.
+non-English `/speckit-*` session yet.
+
+2026-10-18 localization-ready skeleton (owner request): domain throws
+`ItemError` codes and storage `StoreError` codes instead of English text. All UI
+text lives in `src/ui/i18n` (typed `Messages`, `en` catalog, locale registry,
+`errorMessage`; unknown errors show a generic message, never raw technical
+text). `src/main.tsx` sets `<html lang>` and the title. `TITLE_MAX` is shared by
+domain, schema, input, and message. English wording is unchanged. On Node
+24.21.0: **`pnpm verify` passed** (22 files linted, 17 modules/28 dependencies
+with no violations, **15 unit tests** including 3 new catalog tests, build,
+**8 Playwright scenarios** unchanged and passing). One behavior change: invalid
+data at save time now shows the generic catalog message instead of a raw
+validation error.
 
 2026-10-18 Node upgrade (owner request): pin raised from 22.23.3 to **24.21.0**
 (Active LTS) in `.node-version`, `.nvmrc`, `engines`; `@types/node` 22.20.5 →

@@ -117,7 +117,9 @@ dependencies may require environment permission; report an unavailable capabilit
 
 Production boundaries: `src/domain` is pure and imports neither external packages nor
 UI/storage; `src/storage` exposes an asynchronous store port and localStorage
-adapter; `src/ui` contains React UI; `src/main.tsx` composes implementations.
+adapter; `src/ui` contains React UI with all user-facing text in `src/ui/i18n`
+catalogs (domain/storage throw typed error codes); `src/main.tsx` composes
+implementations and selects the locale.
 Boundary parsing may use Zod outside the domain. See the ADRs for rationale.
 Dependency-cruiser prevents cycles, domain dependencies, storage-to-UI imports,
 and UI-to-browser-adapter imports. Unit test files may import their test runner.

@@ -83,7 +83,9 @@ No server or preview is guaranteed to survive an agent session. No deployment ru
 - `src/domain`: pure TypeScript; no external, UI, or storage imports.
 - `src/storage`: asynchronous `DemoStore`, Zod boundary validation, localStorage
   adapter.
-- `src/ui`: React presentation; `src/main.tsx`: composition root.
+- `src/ui`: React presentation; `src/ui/i18n`: typed message catalogs (`en`
+  default), error-code mapping; `src/main.tsx`: composition root and locale.
+  Domain and storage throw typed error codes, never user-facing text.
 
 The demo owns `mvp-starter:demo:v1` and stores version 1
 `{version:1,items:[{id,title,completed}]}`. Stable unique IDs, nonempty trimmed

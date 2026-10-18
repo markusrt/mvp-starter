@@ -39,6 +39,8 @@ not be: agents translate requirements into technical language and cite IDs, not
 prose. Users reviewing a running app at a gate get review steps in their
 language, while `docs/STATUS.md` records them in English.
 
-The starter demo predates this rule: its strings are hardcoded English, and
-domain/storage throw user-facing messages. The first product feature's Setup
-phase replaces it, and the tasks override includes the catalog setup.
+The starter demo is the reference: `ItemError`/`StoreError` carry codes,
+`src/ui/i18n/` holds the typed `Messages` shape, the `en` catalog, the locale
+registry, and `errorMessage`, and `src/main.tsx` sets `<html lang>` and the
+document title from the active locale. Adding a locale means adding one catalog
+file and registering it.

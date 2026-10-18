@@ -1,5 +1,6 @@
 import { z } from "zod";
-import type { DemoStore } from "./port";
+import { TITLE_MAX } from "../domain/items";
+import { type DemoStore, StoreError } from "./port";
 
 export const STORAGE_KEY = "mvp-starter:demo:v1";
 
@@ -11,7 +12,7 @@ const stateSchema = z
         z
           .object({
             id: z.string().trim().min(1),
-            title: z.string().trim().min(1).max(120),
+            title: z.string().trim().min(1).max(TITLE_MAX),
             completed: z.boolean(),
           })
           .strict(),
@@ -33,17 +34,13 @@ export function createBrowserStore(
       try {
         raw = access().getItem(STORAGE_KEY);
       } catch {
-        throw new Error(
-          "Cannot read browser storage. Allow site storage and retry. No data was changed.",
-        );
+        throw new StoreError("read-failed");
       }
       if (raw === null) return [];
       try {
         return stateSchema.parse(JSON.parse(raw)).items;
       } catch {
-        throw new Error(
-          "Demo data is malformed or from an unsupported version. It has been preserved. Retry or deliberately reset the demo.",
-        );
+        throw new StoreError("data-invalid");
       }
     },
     async save(items) {
@@ -51,18 +48,14 @@ export function createBrowserStore(
       try {
         access().setItem(STORAGE_KEY, JSON.stringify(state));
       } catch {
-        throw new Error(
-          "Not saved: browser storage is unavailable or full. Your last saved data is unchanged. Allow storage or free space, then try again.",
-        );
+        throw new StoreError("save-failed");
       }
     },
     async reset() {
       try {
         access().removeItem(STORAGE_KEY);
       } catch {
-        throw new Error(
-          "Reset failed: browser storage is unavailable. Try again.",
-        );
+        throw new StoreError("reset-failed");
       }
     },
   };

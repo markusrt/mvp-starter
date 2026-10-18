@@ -1,5 +1,20 @@
 import { describe, expect, it } from "vitest";
-import { createItem, deleteItem, toggleItem } from "./items";
+import {
+  createItem,
+  deleteItem,
+  ItemError,
+  TITLE_MAX,
+  toggleItem,
+} from "./items";
+
+function errorCode(action: () => unknown): string | undefined {
+  try {
+    action();
+  } catch (cause) {
+    return cause instanceof ItemError ? cause.code : "not-an-item-error";
+  }
+  return undefined;
+}
 
 describe("demo domain", () => {
   it("creates, checks, and deletes without mutating inputs", () => {
@@ -15,13 +30,17 @@ describe("demo domain", () => {
     expect(deleteItem(initial, "missing")).toEqual(initial);
   });
 
-  it("rejects invalid titles and IDs", () => {
-    for (const title of ["", "   ", "a".repeat(121)]) {
-      expect(() => createItem([], title, "one")).toThrow();
+  it("rejects invalid titles and IDs with localizable codes", () => {
+    for (const title of ["", "   ", "a".repeat(TITLE_MAX + 1)]) {
+      expect(errorCode(() => createItem([], title, "one"))).toBe(
+        "title-invalid",
+      );
     }
-    expect(() => createItem([], "Valid", "")).toThrow();
+    expect(errorCode(() => createItem([], "Valid", ""))).toBe("id-invalid");
     const items = createItem([], "Valid", "one");
-    expect(() => createItem(items, "Duplicate", "one")).toThrow();
-    expect(createItem([], "a".repeat(120), "one")).toHaveLength(1);
+    expect(errorCode(() => createItem(items, "Duplicate", "one"))).toBe(
+      "id-invalid",
+    );
+    expect(createItem([], "a".repeat(TITLE_MAX), "one")).toHaveLength(1);
   });
 });
