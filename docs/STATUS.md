@@ -4,14 +4,17 @@
 
 - Updated: 2026-10-18.
 - Repository/branch: `markusrt/mvp-starter`, `copilot/populate-mvp-starter`.
-- Checkpoint: **starter migrated to Spec Kit; awaiting human review**. This is
+- Checkpoint: **starter accepted; squash-merged to `main` via PR #1**. This is
   not C1 of any product. No product feature exists in `specs/`.
 - Active feature: none. The starter ships no sample spec (ADR 004).
 - Approval: owner requested the Spec Kit migration on 2026-10-18, which covers
-  the constitution move/amendment (v2.0.0) recorded in ADR 004. Branch work,
-  push, and PR are authorized by this assignment; merge, deploy, new remote
-  resources, and template-setting changes are not.
-- Human acceptance of the starter: **none yet**.
+  the constitution move/amendment (v2.0.0, later v2.1.0) recorded in ADRs 004
+  and 005, and the ship flow (ADR 007).
+- Human acceptance of the starter: **accepted on 2026-10-18**. The owner made
+  the repository public, enabled GitHub Pages (source: GitHub Actions,
+  `https://markusrt.github.io/mvp-starter/`), and explicitly asked to
+  squash-merge PR #1 into `main`. The resulting deployment is evidence for
+  the next change; it is not recorded here in advance.
 - Prior commits: `ad5a7c0` (starter implementation), `8b79d3e` (initialization
   wording). Inspect actual `git status --short` and `git log` on resume.
 
@@ -142,28 +145,31 @@ inspection) applies to unchanged application code. It was not re-executed.
 2. Read README "Make an independent project", BOOTSTRAP-PROMPT.md, and the GATE
    tasks in `.specify/templates/overrides/tasks-template.md`. Optionally try it
    in a scratch copy: `specify init --here --integration claude`, paste the prompt.
-3. Decide: accept the Spec Kit starter, or request changes. Open choice: keep the
-   demo walking skeleton (current) or strip it to a minimal shell.
+3. The demo walking skeleton is kept: the owner had it made localization-ready
+   instead of stripping it.
 
-The dev server may not survive the session; restart with the command above. No
-forwarded or public preview exists.
+The dev server may not survive the session; restart with the command above.
+After the merge, `main` deploys the demo to `https://markusrt.github.io/mvp-starter/`.
 
 Fresh agent: read constitution → AGENTS → this status → active `specs/` feature
-(none) → relevant ADRs. Do not advance past the pending human review.
+(none) → relevant ADRs. No starter gate is pending.
 
 ## Limits, decisions, and next action
 
 - Discardable nonsensitive demo only; no backup/export, auth, backend, sync,
-  conflict resolution, PWA/offline loading, or deployment. Storage limits: ADR 002.
+  conflict resolution, or PWA/offline loading. Static GitHub Pages deployment
+  per ADR 007. Storage limits: ADR 002.
 - The tasks override copies the spec-kit 1.2.1 core template. On Spec Kit
   upgrades, diff the core template against the override (ADR 004).
 - Spec Kit needs Python and `uv` on each machine that runs `specify`.
 - `.sh` scripts are generated locally per product by `specify init`
   (`--script sh|ps`); the starter commits none.
-- No license chosen. The template-repository setting remains the owner's choice
-  after merge.
-- **Exact next action:** human reviews this change using the three steps above
-  and records acceptance or requested changes here.
+- No license chosen. The repository is public and marked as a template.
+- Ship flow not yet exercised end to end: the first `main` deployment happens
+  with this merge, and `auto-merge` has not run.
+- **Exact next action:** owner creates the first product repository (`kandidu`)
+  from this template, runs `specify init --here --integration claude`, and starts
+  `claude --model opus` with the Kandidu bootstrap prompt.
 
 ## Subsequent handoff schema
 
