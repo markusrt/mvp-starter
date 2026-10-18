@@ -1,9 +1,13 @@
 # mvp-starter
 
-An agent-agnostic, local-first web starter with portable rules, small delivery
-checkpoints, and a copyable [bootstrap prompt](BOOTSTRAP-PROMPT.md). The working
-demo creates, checks, and deletes tasks with explicit persistence/recovery
-behavior. See [docs/STATUS.md](docs/STATUS.md) for verification and pending human review.
+An agent-agnostic, local-first web starter: a verified tech stack, a
+[constitution](.specify/memory/constitution.md), and a checkpointed way of working
+built on [GitHub Spec Kit](https://github.com/github/spec-kit). You bring a product
+idea; an agent specifies, plans, and implements it autonomously and stops at
+checkpoints C1–C3 so you can review a running MVP. The included demo (create,
+check, delete tasks with explicit persistence/recovery) is a walking skeleton
+proving the stack, not a spec. See [docs/STATUS.md](docs/STATUS.md) for
+verification and pending human review.
 
 ## Make an independent project
 
@@ -20,13 +24,20 @@ behavior. See [docs/STATUS.md](docs/STATUS.md) for verification and pending huma
 - [ ] Review ownership, permissions, data needs, and licensing before publishing.
   No license grant is invented by these instructions; select one only with
   authority to do so.
-- [ ] Fill in the bootstrap brief, confirm acceptance criteria, and initialize
-  the product: replace the demo spec in `docs/SPEC.md` with the prompted
-  use-case's requirements and new IDs, and reset `docs/STATUS.md` to product C1
-  with actual evidence, not inherited demo completion/approval or review gates.
-  Retain tooling/process rules; adapt or remove demo code/tests as product
-  slices replace them. Do not reset an already initialized product on resume.
-  Reassess assignment permissions: source-repository authorization is not copied.
+- [ ] Install Spec Kit once per machine (needs Python and
+  [uv](https://docs.astral.sh/uv/)): `uv tool install specify-cli`. Evaluated with
+  1.2.1; check with `specify --version`.
+- [ ] In the new repository, run
+  `specify init --here --integration <agent>` (for example `claude`, `codex`,
+  `copilot`, `cursor-agent`; `specify integration list` shows all). It adds the
+  agent's `speckit-*` commands and `.specify/` scripts/templates, and keeps the
+  shipped constitution and tasks-template override. Commit the result so any
+  later agent can resume. Don't install the git-branching extension unless
+  branch creation is authorized.
+- [ ] Paste the [bootstrap prompt](BOOTSTRAP-PROMPT.md) with your idea. The
+  agent runs specify → clarify → plan → tasks → analyze → implement and stops
+  at the C1 gate with a running app. Reassess assignment permissions:
+  source-repository authorization is not copied.
 
 ## First run and local development
 
@@ -88,17 +99,31 @@ IndexedDB/cloud decision criteria and recovery limits.
 
 ## Work with any agent
 
-Read [CONSTITUTION.md](CONSTITUTION.md) → [AGENTS.md](AGENTS.md) → `docs/STATUS.md` →
-[docs/SPEC.md](docs/SPEC.md) → relevant [ADRs](docs/adr/).
+Read [the constitution](.specify/memory/constitution.md) → [AGENTS.md](AGENTS.md) →
+`docs/STATUS.md` → the active `specs/NNN-*/` feature → relevant [ADRs](docs/adr/).
 Copy [BOOTSTRAP-PROMPT.md](BOOTSTRAP-PROMPT.md), provide an idea and optional
-language/devices/design/sensitivity/budget, and work through C1 risky core,
-C2 useful reload/recovery, and C3 agreed acceptance/handoff. No agent-specific
-memory is required; acceptance and external actions remain explicit human gates.
+language/devices/design/sensitivity/budget/permissions, and work through C1 risky
+core, C2 useful reload/recovery, and C3 agreed acceptance/handoff.
+
+| You | Agent |
+| --- | --- |
+| `specify init`, paste the prompt | `/speckit-specify` → `/speckit-clarify` (≤5 blocking questions) |
+| Answer blocking questions | `/speckit-plan` → `/speckit-tasks` → `/speckit-analyze` → `/speckit-implement` |
+| Review the running app at C1/C2/C3, decide | Fold feedback into the spec, refresh tasks, continue to the next gate |
+
+The checkpoints are enforced by GATE tasks from
+`.specify/templates/overrides/tasks-template.md`, which `/speckit-tasks` uses
+instead of Spec Kit's core template. No agent-specific memory is required;
+acceptance and external actions remain explicit human gates. Rationale:
+[ADR 004](docs/adr/004-spec-kit.md).
 
 ## Folder map
 
 `src/` holds domain, storage, UI, and their unit tests; `e2e/` holds desktop/mobile
-browser smoke tests. `docs/SPEC.md` is the only spec, `docs/STATUS.md` the live
-handoff, and `docs/adr/` the decision record. Root configuration and
+browser smoke tests. `.specify/` holds the constitution and template override
+(plus Spec Kit's scripts/templates after `specify init`), `specs/NNN-*/` holds
+one spec/plan/tasks set per feature (created by `/speckit-specify`; none ships
+with the starter), `docs/STATUS.md` is the live checkpoint handoff, and
+`docs/adr/` the decision record. Root configuration and
 `.github/workflows/ci.yml` run the same local/CI gate. No environment file or
 cloud credentials are needed.

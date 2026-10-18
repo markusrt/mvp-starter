@@ -1,61 +1,84 @@
 # Agent operating guide
 
 These instructions apply to any agent or human contributor; no vendor-specific
-memory or agent service is required.
+memory or agent service is required. Specs follow GitHub Spec Kit
+([ADR 004](docs/adr/004-spec-kit.md)); delivery stops at human checkpoints.
 
 ## Start or resume
 
 Read, in order:
 
-1. `CONSTITUTION.md`
+1. `.specify/memory/constitution.md`
 2. `AGENTS.md`
-3. `docs/STATUS.md`
-4. `docs/SPEC.md`
+3. `docs/STATUS.md` (current feature, checkpoint, pending gate, next action)
+4. The active feature's `specs/NNN-*/spec.md`, `plan.md`, and `tasks.md`
 5. Relevant decisions in `docs/adr/`
 
 Inspect the worktree, branch, available tools, package scripts, and existing work.
-If a canonical document is missing, report it and initialize only within your
-authorized scope. Do not infer completion from a document or prior conversation:
-compare claims with files and recorded evidence. Resume from the next action in
-status; portable repository documents, not chat history, are the handoff.
+Check that Spec Kit is initialized: `.specify/scripts/` and your agent's
+`speckit-*` commands/skills exist. If they are missing, ask the human to run
+`specify init --here --integration <agent>` (see README); do not hand-write
+Spec Kit artifacts. Do not infer completion from a document or prior
+conversation: compare claims with files and recorded evidence. Resume from the
+next action in status; repository documents, not chat history, are the handoff.
 
-For authorized initialization of a new product from this starter, follow
-`BOOTSTRAP-PROMPT.md`'s **NEW PRODUCT INITIALIZATION** instructions: replace the
-demo spec/status with the prompted product's requirements and C1 state, keeping
-tooling and process rules. Demo evidence/approval is not product progress, and
-inherited starter-review gates are not product blockers. For an existing
-product, preserve its requirements/history and honor its pending gates instead.
+For a new product from this starter, follow `BOOTSTRAP-PROMPT.md`. The starter
+ships no product spec: the first feature's spec is the product spec, starting at
+C1. Starter demo code is a walking skeleton, not requirements; starter evidence
+and review gates are not product progress or product blockers. For an existing
+product, preserve its specs/history and honor its pending gates instead.
+
+## Spec Kit flow
+
+| Step | Command | Autonomy |
+| --- | --- | --- |
+| Spec | `/speckit-specify <brief>` | Autonomous. Mark unknowns `[NEEDS CLARIFICATION]`. |
+| Clarify | `/speckit-clarify` | Ask blocking questions (≤5, each with a recommended answer). Stop only if an answer changes acceptance, domain, privacy, retention, paid usage, external access, or architecture. |
+| Plan | `/speckit-plan` | Autonomous. Default to the stack in ADR 001; a departure needs an ADR and approval. |
+| Tasks | `/speckit-tasks` | Autonomous. The override template inserts C1–C3 GATE tasks. |
+| Analyze | `/speckit-analyze` | Autonomous. Fix inconsistencies before implementing. |
+| Implement | `/speckit-implement` | Autonomous until the next GATE task, then stop. |
+| Feedback | `/speckit-clarify` or spec edit, then `/speckit-tasks` / `/speckit-converge` | After a human decision at a gate. |
+
+The constitution is amended only through `/speckit-constitution` with explicit
+human approval and an ADR. `/speckit-checklist` is optional; unchecked checklist
+items make `/speckit-implement` ask before proceeding.
 
 ## Autonomy and gates
 
 - Independently perform reversible implementation, local inspection, and checks
-  within the approved brief and environment permissions.
+  within the approved spec and environment permissions.
 - Ask for decisions that change product acceptance, domain rules, privacy,
   retention, paid usage, external access, destructive operations, or architecture
   commitments. Do not substitute plausible guesses for those decisions.
 - Batch at most five blocking questions, each with a recommended answer and its
   consequences. Track nonblocking questions without stopping unrelated work.
   A pending approval is a stop gate for the affected action.
+- A GATE task in `tasks.md` is a hard stop: do not mark it done or start later
+  phases until `docs/STATUS.md` records an explicit human decision.
 - Preserve unrelated and uncommitted work. Do not use destructive Git operations,
   rewrite history, bypass checks, expose secrets, or alter unrelated files.
 - Branch creation, push, PR creation, deployment, merging, and paid services
-  require authorization. For the current starter implementation assignment,
-  implementation branch work, pushing, and opening/updating its PR are authorized;
-  merging and deployment are not. This grant does not transfer to copied projects.
+  require authorization. For the current starter assignment, branch work,
+  pushing, and opening/updating its PR are authorized; merging and deployment are
+  not. This grant does not transfer to copied projects. Spec Kit's optional git
+  extension creates branches, so install it only with that authorization.
 - Changes to the constitution require human approval plus an ADR. Material
   departures from recorded architecture/process decisions need an ADR and the
   appropriate approval before implementation.
 
 ## Slice workflow
 
-1. Select a small end-to-end slice and its stable spec IDs; identify its risk.
-2. Implement behavior, failure handling, and proportionate tests together.
-3. Run the smallest relevant checks, then the required verification gate before
-   claiming readiness. A blocked check is a limitation, not a pass.
-4. Update `docs/SPEC.md` and `docs/STATUS.md` in the same change. Include commands,
-   outcomes, evidence references, questions, limits, and next action.
-5. Commit the coherent slice when authorized, not individual files. Use a
-   conventional WHAT subject and a WHY body with trade-offs and evidence.
+1. Work the next phase of the active `tasks.md`; each story is an end-to-end
+   slice with stable spec IDs (US, `FR-`, `SC-`) and identified risk.
+2. Implement behavior, failure handling, and tests together; tests are mandatory.
+3. Run the smallest relevant checks, then `pnpm verify` before claiming
+   readiness. A blocked check is a limitation, not a pass.
+4. Tick completed tasks, and update `spec.md` (if scope changed) and
+   `docs/STATUS.md` in the same change, with commands, outcomes, evidence,
+   questions, limits, and next action.
+5. Commit the coherent slice when authorized, not individual tasks or files. Use
+   a conventional WHAT subject and a WHY body with trade-offs and evidence.
 
 ## Commands and architecture
 
@@ -73,35 +96,38 @@ pnpm verify
 ```
 
 Pinned toolchain: Node `22.23.3` in `.node-version`, `.nvmrc`, and package
-`engines`; pnpm `10.34.7` in `packageManager`. `pnpm verify` runs, in order,
-lint, typecheck, architecture, test, build, and test:e2e. Installing browser system
+`engines`; pnpm `10.34.7` in `packageManager`. Spec Kit: `specify-cli` (evaluated
+with 1.2.1), which needs Python and `uv`. `pnpm verify` runs, in order, lint,
+typecheck, architecture, test, build, and test:e2e. Installing browser system
 dependencies may require environment permission; report an unavailable capability.
 
 Production boundaries: `src/domain` is pure and imports neither external packages nor
-UI/storage; `src/storage` exposes an asynchronous `DemoStore` and localStorage
+UI/storage; `src/storage` exposes an asynchronous store port and localStorage
 adapter; `src/ui` contains React UI; `src/main.tsx` composes implementations.
 Boundary parsing may use Zod outside the domain. See the ADRs for rationale.
 Dependency-cruiser prevents cycles, domain dependencies, storage-to-UI imports,
 and UI-to-browser-adapter imports. Unit test files may import their test runner.
+`.specify/` is tool-managed and excluded from Biome; the tasks template override
+lives in `.specify/templates/overrides/`.
 
 ## Checkpoints and handoff
 
-Follow C1–C3 in `BOOTSTRAP-PROMPT.md`. Before requesting review, verify the actual
-running application and a reachable URL in the available environment. Never
-invent a preview or imply loopback is reachable from another machine.
-Give at most three user steps and link the matching spec IDs and evidence.
-Record the worktree state and next action. Stop at pending human decisions;
-silence is not acceptance.
+C1–C3 are defined in the constitution and expressed as GATE tasks. Before
+requesting review, verify the actual running application and a reachable URL in
+the available environment. Never invent a preview or imply loopback is
+reachable from another machine. Give at most three user steps and link the
+matching spec IDs and evidence. Record the worktree state and next action. Stop
+at pending human decisions; silence is not acceptance.
 
-Exact handoff procedure:
+Exact handoff procedure (run at every GATE task):
 1. Inspect `git status --short`, branch, and recent commits; preserve existing work.
-2. Reconcile implemented spec IDs with files and checks. Run `pnpm verify` for
-   behavior-changing work and record any failure or check not run.
+2. Reconcile implemented spec IDs with files, ticked tasks, and checks. Run
+   `pnpm verify` and record any failure or check not run.
 3. Start/restart the server using README commands; check the real review URL and
    its access scope. Never promise process survival or remote access from loopback.
-4. Update `docs/STATUS.md` with checkpoint, approval, evidence, assumptions,
-   limitations, questions, worktree state, and one exact next action. Update the
-   canonical spec in the same change. Reference an existing commit where useful,
+4. Update `docs/STATUS.md` with feature, checkpoint, approval, evidence,
+   assumptions, limitations, questions, worktree state, and one exact next action.
+   Update the spec in the same change. Reference an existing commit where useful,
    not the yet-to-be-created handoff commit's own hash.
 5. Review the diff for secrets and artifacts; make coherent authorized commits.
    Present URL (or restart limitation), what was proven, and ≤3 review steps.

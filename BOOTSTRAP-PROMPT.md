@@ -1,10 +1,12 @@
 # Copyable bootstrap prompt
 
-Copy the complete block below into any coding agent with repository access.
-Replace bracketed inputs; leave optional fields unspecified when unknown.
+Prerequisite (human, once per product repository): run
+`specify init --here --integration <agent>` and commit the result (see README).
+Then copy the complete block below into that agent. Replace bracketed inputs;
+leave optional fields unspecified when unknown.
 
 ```text
-Build a small, useful product from this starter.
+Build a small, useful product from this starter using Spec Kit.
 
 IDEA (required): [problem, intended users, desired outcome]
 LANGUAGE (optional): [UI/content language; technical preference if any]
@@ -12,101 +14,70 @@ DEVICES (optional): [desktop/mobile/tablet, browsers, assistive needs]
 DESIGN (optional): [references, constraints, existing assets]
 SENSITIVITY (optional): [data types, privacy/retention obligations; unknown is OK]
 BUDGET (optional): [money, time, hosting/service constraints]
+PERMISSIONS (optional): [branch/push/PR allowed? default: local commits only]
 
 START / RESUME
 Work from the repository, not remembered chat or vendor-specific memory. Read
-CONSTITUTION.md -> AGENTS.md -> docs/STATUS.md -> docs/SPEC.md -> relevant ADRs.
-Inspect capabilities, branch/worktree, existing implementation, commands, and
-prior evidence before editing. Preserve existing work. Distinguish initializing
-a new product from resuming an already initialized product.
+.specify/memory/constitution.md -> AGENTS.md -> docs/STATUS.md -> active
+specs/NNN-*/ files -> relevant ADRs. Inspect capabilities, branch/worktree,
+existing implementation, commands, and prior evidence before editing. Confirm
+the speckit-* commands are installed; if not, stop and ask the human to run
+specify init. If docs/STATUS.md names an active feature or pending gate, this is
+a RESUME: continue its next action within its gates and never re-specify it.
 
-NEW PRODUCT INITIALIZATION
-The inherited docs/SPEC.md describes a disposable starter demo, not requirements
-for the prompted product. Once authorized to initialize a new product, rewrite
-that same canonical spec from IDEA and clarified requirements: users, problem,
-primary workflow, acceptance criteria with new product IDs, non-goals, risks,
-and assumptions. Replace demo-specific requirements rather than carrying the
-task-list workflow, storage schema, or demo limits into the product by default.
-Reset docs/STATUS.md to the new product's C1 scope, actual evidence, permissions,
-questions, and next action. Do not inherit demo completion, test results, human
-acceptance, or starter-review gates as product progress or product blockers.
-Keep the reusable tooling, architecture boundaries, and process rules. Adapt or
-remove demo-only code and tests as product slices replace them; retain relevant
-quality/failure coverage and add tests for the new workflow. Preserve unrelated
-user work and never clear existing browser data as part of this transition.
+NEW PRODUCT (no product feature in specs/ yet)
+1. /speckit-specify with the inputs above as the brief. Order user stories so
+   P1 exercises the riskiest core assumption; record confirmed facts,
+   assumptions, exclusions, and [NEEDS CLARIFICATION] markers, never guesses.
+2. /speckit-clarify. Ask at most five blocking questions with a recommended
+   answer and trade-off each, and wait only for answers that affect acceptance,
+   domain, privacy, retention, paid usage, external access, or architecture.
+   Record nonblocking questions in docs/STATUS.md and proceed.
+3. /speckit-plan. Reuse this starter's stack and boundaries (ADR 001-002);
+   do not regenerate tooling. Departures need an ADR and approval.
+4. /speckit-tasks, then /speckit-analyze; resolve reported inconsistencies.
+5. /speckit-implement until the C1 GATE task, then hand off and STOP.
+Starter demo code is a walking skeleton: adapt or remove it in the Setup
+phase, keeping relevant quality/failure coverage. Starter evidence and review
+gates are not product progress or blockers. Never clear existing browser data.
 
-EXISTING PRODUCT RESUME
-If a product has already been initialized, do not rewrite its spec or reset its
-status from the starter. Reconcile docs with actual files, retain that product's
-stable IDs and history, and continue its recorded next action within its gates.
-Do not reset or regenerate the project merely because context is missing.
+DELIVERY CHECKPOINTS (GATE tasks in tasks.md)
+C1 - Risky core: smallest real end-to-end sample exercising the riskiest
+assumption, with synthetic discardable data and tested important failures. A
+mock or static screen is not proof.
+C2 - Useful and recoverable: approved workflow with reload/persistence, invalid
+data, read/write failures, recovery, keyboard use, accessible feedback, and
+agreed devices. Describe storage and durability limits honestly; never claim
+saved before the write succeeds.
+C3 - Agreed acceptance: demonstrate acceptance criteria, document limits and
+exact restart/resume steps, request explicit acceptance. Cloud identity, sync,
+deployment, and other infrastructure are optional follow-on features.
+Work only within the approved checkpoint; do not add speculative features.
 
-BRIEF AND DECISIONS
-Reuse this starter rather than regenerating tooling. Summarize users, problem,
-primary workflow, smallest useful outcome, success criterion, acceptance criteria, risky
-assumption, exclusions, and constraints. Distinguish confirmed domain facts from
-assumptions and questions. Investigate the repository and available capabilities
-first. Batch no more than five genuinely blocking questions; give a recommended
-answer and trade-off for each. Record nonblocking questions and proceed on
-independent work. Treat questions requiring approval as gates for the affected
-action, not permission to guess while waiting.
-Populate the canonical docs and work unless blocked; do not request approval
-for every document. Optional documentation frameworks must not create a second spec.
+AT EACH GATE
+Run pnpm verify and record its actual outcome. Verify the app runs and the
+stated URL is reachable in your environment; state who can reach it (loopback
+is local only). Never fabricate a URL, preview, passing check, or review. Give
+the human at most three steps: how to reach/start the app, what to try, and what
+decision is needed. Update docs/STATUS.md and the spec in the same commit, with
+spec IDs, results, questions, limits, worktree state, and one next action. Make
+authorized local commits only, as coherent slices with conventional WHAT
+subjects and WHY bodies. Then STOP.
 
-Act autonomously on reversible technical details within approved scope. Do not
-guess domain, privacy, identity, consent, retention, or authorization rules.
-Do not add paid services, expose data, push, deploy, merge, destructively change
-Git, or bypass checks without the applicable authorization. Existing assignment
-permissions must be explicit; copied starters do not inherit permission grants.
-Constitution changes require human approval plus an ADR.
-Do not create new remote resources without explicit permission or assume this
-agent or a future agent has cloud provisioning capabilities.
+AFTER FEEDBACK
+Record the human decision in docs/STATUS.md. Fold requested changes into
+spec.md with /speckit-clarify (stable IDs; never redefine accepted work
+silently), refresh remaining work with /speckit-tasks or /speckit-converge, then
+/speckit-implement to the next GATE. After C3 acceptance, each new capability is
+a new /speckit-specify feature with its own gate.
 
-DELIVERY CHECKPOINTS
-C1 — Risky core: deliver the smallest real end-to-end sample that exercises the
-highest-risk core assumption. Use synthetic, discardable data where appropriate;
-do not mistake a mock or static screen for proof of the core behavior. Test
-the slice and its important failures. Request a focused human decision on the
-assumption before committing to dependent scope.
-
-C2 — Useful and recoverable: deliver a useful approved workflow, including
-reload/persistence behavior, invalid data, read/write failures, recovery,
-keyboard use, accessible feedback, and agreed device behavior. Describe storage
-and durability limits honestly. Do not silently discard data or claim saved
-before the write succeeds.
-
-C3 — Agreed acceptance and handoff: demonstrate the agreed acceptance criteria,
-run the required checks, document known limits and exact restart/resume steps,
-and request explicit human acceptance. Cloud identity, sync, deployment, and
-other infrastructure are optional follow-on work, not default requirements.
-Do not mark accepted without an explicit human decision.
-Work only within the authorized checkpoint and scope, in small vertical slices;
-do not add speculative features. Review of this starter demo is not acceptance
-of a new product. A newly initialized product starts its own C1 gate.
-
-AT EACH CHECKPOINT
-Run pnpm verify and record its actual outcome before requesting review.
-Verify the app actually runs and the stated URL is reachable in your available
-environment. State who can reach it: loopback is local to the running machine;
-a forwarded URL requires a real configured forwarding mechanism and appropriate
-access controls. Never fabricate a URL, public preview, passing check, or review.
-If preview access is unavailable, say so and give verified local start steps
-instead; leave preview review pending.
-
-Give the human at most three steps: how to reach/start the app, what to try,
-and what decision is needed. Synchronize stable spec IDs, checkpoint/state,
-actual command results and evidence, unresolved questions, limitations,
-worktree state, and one next action in docs/STATUS.md and docs/SPEC.md in the same
-change. Reference ADRs for consequential decisions. Keep commits coherent
-end-to-end slices with conventional WHAT subjects and WHY bodies.
-Make authorized local commits only; pushing requires separate explicit permission.
-
-STOP / HANDOFF
-Stop affected work at a human approval gate. Silence is not approval. Record
-the exact pending decision, recommended option, safe independent work (if any),
-and next action. On restart, another agent must be able to resume solely from
-the canonical docs and repository: no hidden memory, credentials, or chat
-dependency. Report verified results separately from unverified claims.
-Process/server survival is not guaranteed. Document reproducible restart commands,
-recheck the URL on resume, and never advance past a pending human gate.
+LIMITS
+Do not guess domain, privacy, identity, consent, retention, or authorization
+rules. Do not add paid services, expose data, push, deploy, merge, create
+branches or remote resources, destructively change Git, or bypass checks without
+explicit permission. Copied starters do not inherit permission grants.
+Constitution changes need human approval, /speckit-constitution, and an ADR.
+Silence is not approval. A fresh agent must be able to resume solely from the
+repository; process/server survival is not guaranteed, so document restart
+commands and recheck the URL on resume.
 ```

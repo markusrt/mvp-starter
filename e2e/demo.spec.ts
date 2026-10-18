@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const key = "mvp-starter:demo:v1";
 
-test("S1 S2 S5: create, check, reload, delete; keyboard and responsive layout", async ({
+test("demo: create, check, reload, delete; keyboard and responsive layout", async ({
   page,
 }) => {
   await page.goto("/");
@@ -28,7 +28,7 @@ test("S1 S2 S5: create, check, reload, delete; keyboard and responsive layout", 
   ).toBe(true);
 });
 
-test("S3: corrupt data blocks writes until deliberate own-key reset", async ({
+test("demo: corrupt data blocks writes until deliberate own-key reset", async ({
   page,
 }) => {
   await page.addInitScript(
@@ -60,7 +60,7 @@ test("S3: corrupt data blocks writes until deliberate own-key reset", async ({
   await expect(page.getByLabel("New demo item")).toBeEnabled();
 });
 
-test("S4: failed save does not claim success or lose the input; retry works", async ({
+test("demo: failed save does not claim success or lose the input; retry works", async ({
   page,
 }) => {
   await page.addInitScript(() => {
@@ -90,9 +90,7 @@ test("S4: failed save does not claim success or lose the input; retry works", as
   await expect(page.getByRole("status")).toContainText("Saved");
 });
 
-test("S3 S4: denied reads and failed reset remain blocked", async ({
-  page,
-}) => {
+test("demo: denied reads and failed reset remain blocked", async ({ page }) => {
   await page.addInitScript(() => {
     Object.defineProperty(window, "localStorage", {
       get() {

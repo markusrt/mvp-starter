@@ -1,6 +1,9 @@
 # ADR 003: Portable evidence-driven delivery
 
-Status: selected process; checkpoint execution and human decisions in `docs/STATUS.md`.
+Status: selected process; amended by [ADR 004](004-spec-kit.md), which moves the
+constitution to `.specify/memory/constitution.md` and replaces `docs/SPEC.md` with
+Spec Kit feature specs under `specs/`. Checkpoint execution and human decisions
+remain in `docs/STATUS.md`.
 
 ## Context
 
