@@ -18,10 +18,15 @@ Story phases are grouped into delivery checkpoints (C1–C3). Each checkpoint en
 with a **GATE** task: the implementing agent MUST stop there and wait for an
 explicit human decision recorded in `docs/STATUS.md`.
 
-## Format: `[ID] [P?] [Story] Description`
+## Format: `[ID] [P?] [Story] [ROUTINE?] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
 - **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
+- **[ROUTINE]**: Fully specified by plan.md and the task text (exact files,
+  existing patterns to follow, no open design choice), so it may be delegated
+  to a faster model (AGENTS.md, Model routing). Leave untagged anything that
+  shapes domain rules, schemas/contracts, boundaries, security/privacy, or
+  cross-cutting structure, plus every GATE task. When in doubt, leave it untagged.
 - Include exact file paths in descriptions
 
 ## Path Conventions
@@ -65,7 +70,7 @@ explicit human decision recorded in `docs/STATUS.md`.
 
 **Purpose**: Adapt the starter skeleton; do not regenerate tooling
 
-- [ ] T001 Rename package/page title/storage key for the product per plan.md
+- [ ] T001 [ROUTINE] Rename package/page title/storage key for the product per plan.md
 - [ ] T002 Remove or replace starter demo code and tests that this feature supersedes (keep quality/failure coverage)
 - [ ] T003 Make the spec language the default locale: add its catalog in src/ui/i18n/, set `defaultLocale`, and update `lang` in index.html
 
@@ -95,12 +100,12 @@ explicit human decision recorded in `docs/STATUS.md`.
 ### Tests for User Story 1
 
 - [ ] T006 [P] [US1] Unit tests for [rules and failure paths] in src/domain/[name].test.ts
-- [ ] T007 [P] [US1] Playwright journey for [user journey] in e2e/[name].spec.ts
+- [ ] T007 [P] [US1] [ROUTINE] Playwright journey for [user journey] in e2e/[name].spec.ts
 
 ### Implementation for User Story 1
 
 - [ ] T008 [US1] Implement [domain behavior] in src/domain/[name].ts
-- [ ] T009 [US1] Implement [UI flow] in src/ui/[Component].tsx
+- [ ] T009 [US1] [ROUTINE] Implement [UI flow] in src/ui/[Component].tsx
 - [ ] T010 [US1] Surface validation and errors accessibly
 
 ### C1 GATE
@@ -118,7 +123,7 @@ explicit human decision recorded in `docs/STATUS.md`.
 ### Tests for User Story 2
 
 - [ ] T012 [P] [US2] Unit tests for [persistence, invalid data, failures] in src/storage/[name].test.ts
-- [ ] T013 [P] [US2] Playwright journey for [reload/recovery] in e2e/[name].spec.ts
+- [ ] T013 [P] [US2] [ROUTINE] Playwright journey for [reload/recovery] in e2e/[name].spec.ts
 
 ### Implementation for User Story 2
 
@@ -140,7 +145,7 @@ explicit human decision recorded in `docs/STATUS.md`.
 **Purpose**: Demonstrate agreed acceptance criteria and hand off
 
 - [ ] TXXX [P] Accessibility pass: keyboard-only journey, focus, labels, status/error announcements
-- [ ] TXXX [P] Localization pass: no user-facing strings outside src/ui/i18n/, `Intl` formatting, layouts tolerate longer text at mobile width
+- [ ] TXXX [P] [ROUTINE] Localization pass: no user-facing strings outside src/ui/i18n/, `Intl` formatting, layouts tolerate longer text at mobile width
 - [ ] TXXX Run quickstart.md validation
 - [ ] TXXX Document known limits and exact restart/resume steps in docs/STATUS.md and README.md
 - [ ] TXXX [GATE] C3 checkpoint: same procedure as T011; request explicit acceptance. **STOP**; never mark accepted without a recorded human decision.

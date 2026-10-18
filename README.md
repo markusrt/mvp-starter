@@ -113,6 +113,12 @@ core, C2 useful reload/recovery, and C3 agreed acceptance/handoff.
 | Answer blocking questions | `/speckit-plan` → `/speckit-tasks` → `/speckit-analyze` → `/speckit-implement` |
 | Review the running app at C1/C2/C3, decide | Fold feedback into the spec, refresh tasks, continue to the next gate |
 
+Models: run the main session on Opus (`claude --model opus`) for specifying,
+planning, and judgment-heavy tasks. Tasks the planner tags `[ROUTINE]` are
+delegated to the `speckit-implementer` subagent on Sonnet
+(`.claude/agents/speckit-implementer.md`), and the main session reviews them
+([ADR 006](docs/adr/006-model-routing.md)).
+
 Write the brief in whatever language suits you: the agent talks to you and
 writes the spec in that language, and builds the UI in it as the default locale
 behind a message catalog. Headings, markers, and IDs inside specs stay English so

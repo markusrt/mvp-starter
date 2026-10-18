@@ -16,6 +16,7 @@ DESIGN (optional): [references, constraints, existing assets]
 SENSITIVITY (optional): [data types, privacy/retention obligations; unknown is OK]
 BUDGET (optional): [money, time, hosting/service constraints]
 PERMISSIONS (optional): [branch/push/PR allowed? default: local commits only]
+MODELS (optional): [default: AGENTS.md model routing; "single" = no delegation]
 
 START / RESUME
 Work from the repository, not remembered chat or vendor-specific memory. Read
@@ -45,7 +46,10 @@ NEW PRODUCT (no product feature in specs/ yet)
 3. /speckit-plan. Reuse this starter's stack and boundaries (ADR 001-002);
    do not regenerate tooling. Departures need an ADR and approval.
 4. /speckit-tasks, then /speckit-analyze; resolve reported inconsistencies.
-5. /speckit-implement until the C1 GATE task, then hand off and STOP.
+   Tag only fully specified tasks [ROUTINE]; leave design-shaping ones untagged.
+5. /speckit-implement until the C1 GATE task, then hand off and STOP. Delegate
+   [ROUTINE] tasks per AGENTS.md model routing; review their diffs, keep
+   untagged tasks, verification, commits, and handoff in this session.
 Starter demo code is a walking skeleton: adapt or remove it in the Setup
 phase, keeping relevant quality/failure coverage. Starter evidence and review
 gates are not product progress or blockers. Never clear existing browser data.

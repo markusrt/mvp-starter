@@ -38,6 +38,18 @@ updated. Basis: grep of specify-cli 1.2.1 scripts found no content parsing, and
 the skills reference only the English markers listed in ADR 005. Not run: no
 non-English `/speckit-*` session yet.
 
+2026-10-18 model routing (owner request, ADR 006): `.claude/agents/
+speckit-implementer.md` (`sonnet`, effort `medium`) implements `[ROUTINE]` tasks.
+The main session (`opus`) keeps planning, untagged tasks, review, verify,
+commits, and gates. The tasks override defines and samples `[ROUTINE]`;
+AGENTS.md, BOOTSTRAP-PROMPT.md (MODELS field), and README are updated.
+Evidence: specify-cli 1.2.1 source shows workflow steps accept `model:` but
+dispatch headless `claude -p` (option rejected, see ADR). `specify init --here`
+on a scratch copy left the subagent file byte-identical, and the PowerShell
+template resolver returns the tagged override. Not run: no live delegation
+(it needs a product and spends model usage); subagent fields are checked
+against the Claude Code docs only.
+
 2026-10-18 localization-ready skeleton (owner request): domain throws
 `ItemError` codes and storage `StoreError` codes instead of English text. All UI
 text lives in `src/ui/i18n` (typed `Messages`, `en` catalog, locale registry,

@@ -40,6 +40,26 @@ product, preserve its specs/history and honor its pending gates instead.
 | Implement | `/speckit-implement` | Autonomous until the next GATE task, then stop. |
 | Feedback | `/speckit-clarify` or spec edit, then `/speckit-tasks` / `/speckit-converge` | After a human decision at a gate. |
 
+### Model routing (ADR 006)
+
+The main session runs on the planning tier and owns everything that needs
+judgment: specify, clarify, plan, tasks, analyze, untagged tasks, reviewing
+delegated work, `pnpm verify`, commits, and GATE handoffs. During
+`/speckit-implement`, delegate tasks tagged `[ROUTINE]` to a faster model, then
+review the diff and tick the tasks yourself. Delegate a coherent batch (for
+example one story's routine tasks) with the task IDs and feature directory,
+not one call per line. Redo or take over delegated work that fails checks or
+reports a stop.
+
+| Role | Claude Code | Override |
+| --- | --- | --- |
+| Planning and judgment (main session) | `opus` (start with `claude --model opus`, or `/model opus`) | `fable` for unusually hard products |
+| `[ROUTINE]` tasks | `speckit-implementer` subagent: `sonnet`, effort `medium` | `model:` in `.claude/agents/speckit-implementer.md` |
+
+Other agents: use their subagent/model mechanism if they have one, otherwise
+implement all tasks in the main session. Routing never relaxes the rules:
+delegated work meets the same tests, boundaries, and checks.
+
 ### Language (constitution XII, ADR 005)
 
 | What | Language |
