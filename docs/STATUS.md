@@ -28,6 +28,19 @@
 - `biome.json` excludes tool-managed `.specify/`.
 - AGENTS.md, BOOTSTRAP-PROMPT.md, README.md, ADR 003 updated; ADR 004 added.
 
+2026-10-18 language policy (owner request): constitution v2.1.0 adds principle
+XII and ADR 005. Spec language is the user's best-fit language (default: the
+brief's). Technical docs and code are English. Spec Kit structure (headings,
+markers, IDs) stays English. The UI defaults to the spec language through a
+message catalog. AGENTS.md, BOOTSTRAP-PROMPT.md (SPEC/UI LANGUAGE fields),
+README, and the tasks override (catalog setup T003, C3 localization pass)
+updated. Basis: grep of specify-cli 1.2.1 scripts found no content parsing, and
+the skills reference only the English markers listed in ADR 005. Not run: no
+non-English `/speckit-*` session yet. Known gap: the demo skeleton hardcodes
+English UI text and throws user-facing messages from domain/storage, which
+violates XII until the first feature replaces it, or until the skeleton is
+refactored if the owner wants that.
+
 2026-10-18 Node upgrade (owner request): pin raised from 22.23.3 to **24.21.0**
 (Active LTS) in `.node-version`, `.nvmrc`, `engines`; `@types/node` 22.20.5 →
 24.19.2; ADR 001, AGENTS.md, README updated. CI reads `.node-version`. On Node

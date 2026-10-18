@@ -29,6 +29,8 @@ explicit human decision recorded in `docs/STATUS.md`.
 - `src/domain/`: pure TypeScript, no external/UI/storage imports; unit tests beside code (`*.test.ts`)
 - `src/storage/`: async store port, Zod boundary validation, browser adapter
 - `src/ui/`: React presentation; `src/main.tsx`: composition root
+- `src/ui/i18n/`: typed message catalog per locale; default locale = spec language
+  (constitution XII). Domain/storage return typed error codes, never UI text.
 - `e2e/`: Playwright journeys (desktop Chrome and Pixel 7 projects)
 - Adjust only if plan.md records an approved departure (ADR)
 
@@ -65,6 +67,7 @@ explicit human decision recorded in `docs/STATUS.md`.
 
 - [ ] T001 Rename package/page title/storage key for the product per plan.md
 - [ ] T002 Remove or replace starter demo code and tests that this feature supersedes (keep quality/failure coverage)
+- [ ] T003 Add the typed message catalog for the default locale in src/ui/i18n/ and set `<html lang>` in index.html
 
 ---
 
@@ -74,8 +77,8 @@ explicit human decision recorded in `docs/STATUS.md`.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 Define domain types and pure rules in src/domain/[entity].ts with tests in src/domain/[entity].test.ts
-- [ ] T004 Define the async store port and validated schema in src/storage/
+- [ ] T004 Define domain types and pure rules in src/domain/[entity].ts with tests in src/domain/[entity].test.ts
+- [ ] T005 Define the async store port and validated schema in src/storage/
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -91,18 +94,18 @@ explicit human decision recorded in `docs/STATUS.md`.
 
 ### Tests for User Story 1
 
-- [ ] T005 [P] [US1] Unit tests for [rules and failure paths] in src/domain/[name].test.ts
-- [ ] T006 [P] [US1] Playwright journey for [user journey] in e2e/[name].spec.ts
+- [ ] T006 [P] [US1] Unit tests for [rules and failure paths] in src/domain/[name].test.ts
+- [ ] T007 [P] [US1] Playwright journey for [user journey] in e2e/[name].spec.ts
 
 ### Implementation for User Story 1
 
-- [ ] T007 [US1] Implement [domain behavior] in src/domain/[name].ts
-- [ ] T008 [US1] Implement [UI flow] in src/ui/[Component].tsx
-- [ ] T009 [US1] Surface validation and errors accessibly
+- [ ] T008 [US1] Implement [domain behavior] in src/domain/[name].ts
+- [ ] T009 [US1] Implement [UI flow] in src/ui/[Component].tsx
+- [ ] T010 [US1] Surface validation and errors accessibly
 
 ### C1 GATE
 
-- [ ] T010 [GATE] C1 checkpoint: run `pnpm verify`; start `pnpm dev --host 127.0.0.1 --port 5173 --strictPort` and confirm the URL responds; update docs/STATUS.md (checkpoint, spec IDs, commands and outcomes, URL and who can reach it, ≤3 review steps, questions, next action) and the spec in the same commit; commit the slice; then **STOP** and wait for an explicit human decision. Do not start later phases until docs/STATUS.md records approval.
+- [ ] T011 [GATE] C1 checkpoint: run `pnpm verify`; start `pnpm dev --host 127.0.0.1 --port 5173 --strictPort` and confirm the URL responds; update docs/STATUS.md (checkpoint, spec IDs, commands and outcomes, URL and who can reach it, ≤3 review steps, questions, next action) and the spec in the same commit; commit the slice; then **STOP** and wait for an explicit human decision. Do not start later phases until docs/STATUS.md records approval.
 
 ---
 
@@ -114,17 +117,17 @@ explicit human decision recorded in `docs/STATUS.md`.
 
 ### Tests for User Story 2
 
-- [ ] T011 [P] [US2] Unit tests for [persistence, invalid data, failures] in src/storage/[name].test.ts
-- [ ] T012 [P] [US2] Playwright journey for [reload/recovery] in e2e/[name].spec.ts
+- [ ] T012 [P] [US2] Unit tests for [persistence, invalid data, failures] in src/storage/[name].test.ts
+- [ ] T013 [P] [US2] Playwright journey for [reload/recovery] in e2e/[name].spec.ts
 
 ### Implementation for User Story 2
 
-- [ ] T013 [US2] Implement [behavior] in src/[location]/[file].ts
-- [ ] T014 [US2] Integrate with User Story 1 components (if needed)
+- [ ] T014 [US2] Implement [behavior] in src/[location]/[file].ts
+- [ ] T015 [US2] Integrate with User Story 1 components (if needed)
 
 ### C2 GATE
 
-- [ ] T015 [GATE] C2 checkpoint: same procedure as T010 for US1–US2; **STOP** for an explicit human decision.
+- [ ] T016 [GATE] C2 checkpoint: same procedure as T011 for US1–US2; **STOP** for an explicit human decision.
 
 ---
 
@@ -137,9 +140,10 @@ explicit human decision recorded in `docs/STATUS.md`.
 **Purpose**: Demonstrate agreed acceptance criteria and hand off
 
 - [ ] TXXX [P] Accessibility pass: keyboard-only journey, focus, labels, status/error announcements
+- [ ] TXXX [P] Localization pass: no user-facing strings outside src/ui/i18n/, `Intl` formatting, layouts tolerate longer text at mobile width
 - [ ] TXXX Run quickstart.md validation
 - [ ] TXXX Document known limits and exact restart/resume steps in docs/STATUS.md and README.md
-- [ ] TXXX [GATE] C3 checkpoint: same procedure as T010; request explicit acceptance. **STOP**; never mark accepted without a recorded human decision.
+- [ ] TXXX [GATE] C3 checkpoint: same procedure as T011; request explicit acceptance. **STOP**; never mark accepted without a recorded human decision.
 
 ---
 

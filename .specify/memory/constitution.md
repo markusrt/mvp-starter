@@ -81,6 +81,26 @@ Respect existing work and explicit scope. Stop at delivery checkpoints with a
 running application and wait for an explicit human decision; an agent cannot
 approve its own exception or advance past a pending gate.
 
+### XII. Speak the user's language; build for localization
+
+- **Spec language**: the language that best fits the user, which is the language
+  of their brief unless they state another. Conversation with the user,
+  clarification questions, review steps, and the prose of `spec.md` (and its
+  checklists) use it. The spec records it as `**Spec Language**: <BCP 47 tag>`.
+- **Technical language is English**: constitution, AGENTS.md, README, ADRs,
+  `docs/STATUS.md`, plan/research/data-model/contracts/quickstart/tasks, code,
+  identifiers, comments, test names, and commit messages.
+- **Structure stays English in every document**: template headings, markers such
+  as `[NEEDS CLARIFICATION]`, `## Clarifications`, `### Session`, and `GATE`, and
+  IDs (`US1`, `P1`, `FR-001`, `SC-001`, `T001`). Spec Kit commands look for them.
+- **UI**: the default locale is the spec language unless the spec states
+  otherwise. Every user-facing string comes from a locale message catalog, never
+  hardcoded in components or thrown from domain/storage code (those layers
+  return typed error codes the UI maps to messages). Set `<html lang>`, format
+  dates/numbers/plurals with `Intl`, avoid sentence concatenation, and keep
+  layouts tolerant of longer text. Shipping more than the default locale is a
+  separate, approved feature.
+
 ## Delivery Checkpoints
 
 Agents work autonomously between checkpoints and stop at each one:
@@ -106,4 +126,4 @@ principle or section; PATCH: wording). Reading order and operational approval
 gates are defined in `AGENTS.md`. These are generic project defaults; override
 them consciously for a product.
 
-**Version**: 2.0.0 | **Ratified**: 2026-10-16 | **Last Amended**: 2026-10-18
+**Version**: 2.1.0 | **Ratified**: 2026-10-16 | **Last Amended**: 2026-10-18

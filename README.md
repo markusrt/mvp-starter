@@ -111,6 +111,12 @@ core, C2 useful reload/recovery, and C3 agreed acceptance/handoff.
 | Answer blocking questions | `/speckit-plan` → `/speckit-tasks` → `/speckit-analyze` → `/speckit-implement` |
 | Review the running app at C1/C2/C3, decide | Fold feedback into the spec, refresh tasks, continue to the next gate |
 
+Write the brief in whatever language suits you: the agent talks to you and
+writes the spec in that language, and builds the UI in it as the default locale
+behind a message catalog. Headings, markers, and IDs inside specs stay English so
+Spec Kit commands keep working; all technical docs and code are English
+([ADR 005](docs/adr/005-language-policy.md)).
+
 The checkpoints are enforced by GATE tasks from
 `.specify/templates/overrides/tasks-template.md`, which `/speckit-tasks` uses
 instead of Spec Kit's core template. No agent-specific memory is required;

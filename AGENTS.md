@@ -40,6 +40,20 @@ product, preserve its specs/history and honor its pending gates instead.
 | Implement | `/speckit-implement` | Autonomous until the next GATE task, then stop. |
 | Feedback | `/speckit-clarify` or spec edit, then `/speckit-tasks` / `/speckit-converge` | After a human decision at a gate. |
 
+### Language (constitution XII, ADR 005)
+
+| What | Language |
+| --- | --- |
+| Chat with the user, clarify questions, gate review steps | Spec language |
+| `spec.md` prose, its checklists, clarification answers | Spec language |
+| Headings, `[NEEDS CLARIFICATION]`, `## Clarifications`, `GATE`, IDs | English, always |
+| Constitution, AGENTS, README, ADRs, STATUS, plan, tasks, code, tests, commits | English |
+| UI | Default locale = spec language, via message catalog |
+
+Spec language is the language of the user's brief unless they name another; the
+spec records it as `**Spec Language**: <BCP 47 tag>`. If a user switches
+language mid-project, ask before changing the recorded spec language.
+
 The constitution is amended only through `/speckit-constitution` with explicit
 human approval and an ADR. `/speckit-checklist` is optional; unchecked checklist
 items make `/speckit-implement` ask before proceeding.

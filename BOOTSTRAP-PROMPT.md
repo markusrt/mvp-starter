@@ -9,7 +9,8 @@ leave optional fields unspecified when unknown.
 Build a small, useful product from this starter using Spec Kit.
 
 IDEA (required): [problem, intended users, desired outcome]
-LANGUAGE (optional): [UI/content language; technical preference if any]
+SPEC LANGUAGE (optional): [default: the language this brief is written in]
+UI LANGUAGE (optional): [default: the spec language; list any later locales]
 DEVICES (optional): [desktop/mobile/tablet, browsers, assistive needs]
 DESIGN (optional): [references, constraints, existing assets]
 SENSITIVITY (optional): [data types, privacy/retention obligations; unknown is OK]
@@ -25,8 +26,16 @@ the speckit-* commands are installed; if not, stop and ask the human to run
 specify init. If docs/STATUS.md names an active feature or pending gate, this is
 a RESUME: continue its next action within its gates and never re-specify it.
 
+LANGUAGE (constitution XII)
+Talk to the user and write spec.md prose in the spec language. Keep template
+headings, Spec Kit markers ([NEEDS CLARIFICATION], ## Clarifications, GATE) and
+IDs (US1, P1, FR-001, SC-001, T001) in English. Everything technical is English:
+plan, tasks, status, ADRs, code, tests, commits. Build the UI in the spec
+language as the default locale through a message catalog, never hardcoded.
+
 NEW PRODUCT (no product feature in specs/ yet)
-1. /speckit-specify with the inputs above as the brief. Order user stories so
+1. /speckit-specify with the inputs above as the brief; record
+   **Spec Language** and the UI default locale in the spec. Order user stories so
    P1 exercises the riskiest core assumption; record confirmed facts,
    assumptions, exclusions, and [NEEDS CLARIFICATION] markers, never guesses.
 2. /speckit-clarify. Ask at most five blocking questions with a recommended
