@@ -38,6 +38,23 @@ updated. Basis: grep of specify-cli 1.2.1 scripts found no content parsing, and
 the skills reference only the English markers listed in ADR 005. Not run: no
 non-English `/speckit-*` session yet.
 
+2026-10-18 ship flow and GitHub Pages (owner request, ADR 007): gates now
+include a local review (`.claude/agents/speckit-reviewer.md`, opus, read-only)
+and local feedback before shipping. `scripts/ship.mjs` (`pnpm ship`) supports
+`expert-review` and `auto-merge`. CI gains `pages-check` and `deploy` jobs for
+`main`. `models:check` expects the reviewer on opus and gains `--require <type>`.
+AGENTS.md, BOOTSTRAP-PROMPT.md (SHIP MODE), and README are updated. The README
+no longer claims the template flag is off: the API reports `is_template: true`.
+Evidence: workflow YAML parses (jobs verify → pages-check → deploy); action SHAs
+resolved from each action's latest release tag (configure-pages v6.0.0,
+upload-pages-artifact v5.0.0, deploy-pages v5.0.1); a base-path build
+(`vite build --base /mvp-starter/`) emits `/mvp-starter/assets/...` and the
+default build is unchanged. `ship.mjs` exits 2 on usage errors and 3 on a dirty
+tree; further dry runs are below. Repository facts: private, free plan, Pages
+404, branch protection 403, auto-merge setting off. Not run: real push, PR
+merge, CI deploy, or live URL check, because merging is the owner's decision.
+The first real run must be watched.
+
 2026-10-18 routing sanity check (owner request): `scripts/check-model-routing.mjs`
 (`pnpm models:check`) and an AGENTS.md procedure (probe before the first
 implementation task, table at every GATE, stop on mismatch). Tested on real

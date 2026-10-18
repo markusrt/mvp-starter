@@ -55,6 +55,7 @@ reports a stop.
 | --- | --- | --- |
 | Planning and judgment (main session) | `opus` (start with `claude --model opus`, or `/model opus`) | `fable` for unusually hard products |
 | `[ROUTINE]` tasks | `speckit-implementer` subagent: `sonnet`, effort `medium` | `model:` in `.claude/agents/speckit-implementer.md` |
+| Pre-PR review at a GATE | `speckit-reviewer` subagent: `opus`, effort `high`, read-only | `model:` in `.claude/agents/speckit-reviewer.md` |
 
 Other agents: use their subagent/model mechanism if they have one, otherwise
 implement all tasks in the main session. Routing never relaxes the rules:
@@ -108,11 +109,13 @@ items make `/speckit-implement` ask before proceeding.
   phases until `docs/STATUS.md` records an explicit human decision.
 - Preserve unrelated and uncommitted work. Do not use destructive Git operations,
   rewrite history, bypass checks, expose secrets, or alter unrelated files.
-- Branch creation, push, PR creation, deployment, merging, and paid services
-  require authorization. For the current starter assignment, branch work,
-  pushing, and opening/updating its PR are authorized; merging and deployment are
-  not. This grant does not transfer to copied projects. Spec Kit's optional git
-  extension creates branches, so install it only with that authorization.
+- Branch creation, push, PR creation, merging, deployment, and paid services
+  require authorization. A product grants them through its recorded ship mode
+  (see Ship); `local-only` grants none. For the current starter assignment,
+  branch work, pushing, and opening/updating its PR are authorized; merging and
+  deployment are not. Grants do not transfer to copied projects. Spec Kit's
+  optional git extension creates branches, so install it only with that
+  authorization.
 - Changes to the constitution require human approval plus an ADR. Material
   departures from recorded architecture/process decisions need an ADR and the
   appropriate approval before implementation.
@@ -176,12 +179,49 @@ Exact handoff procedure (run at every GATE task):
 2. Reconcile implemented spec IDs with files, ticked tasks, and checks. Run
    `pnpm verify` and record any failure or check not run. Run
    `pnpm models:check` and record which tasks were delegated.
-3. Start/restart the server using README commands; check the real review URL and
+3. Local review: run the `speckit-reviewer` subagent on the branch diff
+   (agents without subagents: do the same checklist yourself in a fresh pass).
+   Fix blockers and should-fix findings, rerun the affected checks, and list
+   remaining findings in the handoff.
+4. Start/restart the server using README commands; check the real review URL and
    its access scope. Never promise process survival or remote access from loopback.
-4. Update `docs/STATUS.md` with feature, checkpoint, approval, evidence,
+5. Update `docs/STATUS.md` with feature, checkpoint, approval, evidence,
    assumptions, limitations, questions, worktree state, and one exact next action.
    Update the spec in the same change. Reference an existing commit where useful,
    not the yet-to-be-created handoff commit's own hash.
-5. Review the diff for secrets and artifacts; make coherent authorized commits.
-   Present URL (or restart limitation), what was proven, and ≤3 review steps.
-   Stop and wait at the pending gate; a fresh agent may not advance past it.
+6. Review the diff for secrets and artifacts; make coherent authorized commits.
+   Present URL (or restart limitation), what was proven, review findings, and
+   ≤3 review steps. Stop and wait at the pending gate; a fresh agent may not
+   advance past it.
+7. Local feedback: the human tries the running app and answers with changes
+   (fold them in, back to step 2) or approval. On approval, record it and ship.
+
+## Ship: PR, merge, deploy (ADR 007)
+
+The ship mode is recorded in `docs/STATUS.md` and comes from the bootstrap
+prompt. If none is recorded, ask at the first approved gate (recommend
+`auto-merge` for solo products with a public repository).
+
+| Mode | What the agent does after an approved gate |
+| --- | --- |
+| `local-only` | Nothing beyond local commits. |
+| `expert-review` | `pnpm ship --mode expert-review`: push, create/reuse the PR, report its URL, stop. A human reviews and merges. |
+| `auto-merge` | `pnpm ship --mode auto-merge`: push, PR, wait for CI, merge (rebase by default), wait for the `main` run including the Pages deploy, verify the live URL, comment it on the PR. |
+
+- Work on a feature branch named after the Spec Kit feature (for example
+  `001-bewerbungs-mvp`); create it before the first commit of the feature when
+  the ship mode allows branches.
+- First PR: write the body from `docs/STATUS.md` (checkpoint, spec IDs,
+  evidence, `pnpm models:check` table, review findings) and pass
+  `--title "<conventional subject>" --body-file <file outside the repo>`.
+  Later gates on the same branch update the open PR.
+- GitHub Pages: `ship` checks it before pushing. If it isn't set up, give the
+  human the exact steps the script prints (Settings > Pages > Source: GitHub
+  Actions; private repositories need GitHub Pro/Team, and the site is public
+  either way). Offer to run the printed `gh api` command only with their
+  permission. CI never fails because Pages is missing: it skips the deploy and
+  explains why in the run summary.
+- Report the outcome: PR URL, check results, and for `auto-merge` the live URL
+  and run link. Record them in `docs/STATUS.md` with the next change (never
+  push directly to `main`). Exit codes: 1 = checks or deploy failed (fix on a new
+  branch), 3 = precondition (report the printed hint).

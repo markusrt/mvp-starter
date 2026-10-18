@@ -11,9 +11,9 @@ verification and pending human review.
 
 ## Make an independent project
 
-- [ ] After this starter change is merged, its owner can enable **Settings →
-  General → Template repository**. The template flag is currently false; do not
-  assume **Use this template** is available before the owner enables it.
+- [ ] `markusrt/mvp-starter` is marked as a template repository (checked
+  2026-10-18), so **Use this template** creates new repositories from `main`.
+  Changes reach new projects only after they are merged to `main`.
 - [ ] Create a repository from the enabled template, or make an ordinary source
   copy into a new independent repository. Copying files does not require a
   generator, account service, or preserved upstream Git history; do not delete or
@@ -76,7 +76,8 @@ To restart after a session ends, run `pnpm dev --host 127.0.0.1 --port 5173 --st
 Only if your environment offers authenticated forwarding, bind with
 `pnpm dev --host 0.0.0.0 --port 5173 --strictPort` and forward port 5173;
 check access controls and verify the actual forwarded URL before sharing it.
-No server or preview is guaranteed to survive an agent session. No deployment runs.
+No server or preview is guaranteed to survive an agent session. Production
+deployment happens only through the ship flow below.
 
 ## Architecture and storage
 
@@ -112,6 +113,7 @@ core, C2 useful reload/recovery, and C3 agreed acceptance/handoff.
 | `specify init`, paste the prompt | `/speckit-specify` → `/speckit-clarify` (≤5 blocking questions) |
 | Answer blocking questions | `/speckit-plan` → `/speckit-tasks` → `/speckit-analyze` → `/speckit-implement` |
 | Review the running app at C1/C2/C3, decide | Fold feedback into the spec, refresh tasks, continue to the next gate |
+| Approve a gate | Ship per mode: PR for expert review, or auto-merge → GitHub Pages → live URL |
 
 Models: run the main session on Opus (`claude --model opus`) for specifying,
 planning, and judgment-heavy tasks. Tasks the planner tags `[ROUTINE]` are
@@ -130,6 +132,26 @@ The checkpoints are enforced by GATE tasks from
 instead of Spec Kit's core template. No agent-specific memory is required;
 acceptance and external actions remain explicit human gates. Rationale:
 [ADR 004](docs/adr/004-spec-kit.md).
+
+## Ship and deploy
+
+At every gate the agent runs a local review (`speckit-reviewer` subagent),
+shows you the running app, and waits for your feedback. After you approve, it
+ships according to the product's ship mode ([ADR 007](docs/adr/007-ship-flow.md)):
+
+- `local-only`: local commits only.
+- `expert-review`: `pnpm ship --mode expert-review` pushes the feature branch
+  and opens or updates a PR. You (or an expert) review and merge.
+- `auto-merge`: `pnpm ship --mode auto-merge` also waits for CI, merges, waits
+  for the deployment, checks the live URL, and comments it on the PR.
+
+Every push to `main` that passes `verify` deploys `dist/` to GitHub Pages
+(`.github/workflows/ci.yml`). One-time setup per repository: **Settings → Pages →
+Build and deployment → Source: GitHub Actions**. Pages needs a public
+repository or GitHub Pro/Team, and the site is always public: fine for this
+local-first app, because user data stays in each visitor's browser. Until Pages
+is set up, CI skips the deployment and says why in the run summary, and
+`pnpm ship` prints the steps. Both modes need the `gh` CLI logged in.
 
 ## Folder map
 

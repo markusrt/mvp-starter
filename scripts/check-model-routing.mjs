@@ -3,8 +3,11 @@
 // transcripts, and checks them against the routing in AGENTS.md (ADR 006).
 // Read-only. Usage:
 //   node scripts/check-model-routing.mjs [--session <id>] [--cwd <dir>]
-//     [--expect-main opus] [--expect-agent speckit-implementer=sonnet]
-//     [--require-agent]
+//     [--expect-main opus] [--expect-agent <type>=<model>]...
+//     [--require <type>]... [--require-agent]
+// Defaults: main opus, speckit-implementer sonnet, speckit-reviewer opus.
+// --require fails if that agent type never ran; --require-agent is
+// shorthand for --require speckit-implementer.
 // Exit codes: 0 ok, 1 routing mismatch, 2 no transcript found.
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { homedir } from "node:os";
@@ -15,8 +18,11 @@ function parseArgs(argv) {
     cwd: process.cwd(),
     session: undefined,
     expectMain: "opus",
-    expectAgents: new Map([["speckit-implementer", "sonnet"]]),
-    requireAgent: false,
+    expectAgents: new Map([
+      ["speckit-implementer", "sonnet"],
+      ["speckit-reviewer", "opus"],
+    ]),
+    required: new Set(),
   };
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i];
@@ -27,8 +33,9 @@ function parseArgs(argv) {
     else if (flag === "--expect-agent") {
       const [type, model] = value.split("=");
       options.expectAgents.set(type, model);
-    } else if (flag === "--require-agent") {
-      options.requireAgent = true;
+    } else if (flag === "--require") options.required.add(value);
+    else if (flag === "--require-agent") {
+      options.required.add("speckit-implementer");
       continue;
     } else throw new Error(`Unknown option: ${flag}`);
     i++;
@@ -110,16 +117,12 @@ if (existsSync(subagentDir)) {
       format(counts),
       expected ?? "-",
     ]);
-    if (expected) {
-      seen.add(type);
-      if (!matches(counts, expected)) failures.add(type);
-    }
+    seen.add(type);
+    if (expected && !matches(counts, expected)) failures.add(type);
   }
 }
-if (options.requireAgent) {
-  for (const type of options.expectAgents.keys()) {
-    if (!seen.has(type)) failures.add(`${type} (never ran)`);
-  }
+for (const type of options.required) {
+  if (!seen.has(type)) failures.add(`${type} (never ran)`);
 }
 
 console.log(`Session ${session}\n`);

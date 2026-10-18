@@ -15,7 +15,8 @@ DEVICES (optional): [desktop/mobile/tablet, browsers, assistive needs]
 DESIGN (optional): [references, constraints, existing assets]
 SENSITIVITY (optional): [data types, privacy/retention obligations; unknown is OK]
 BUDGET (optional): [money, time, hosting/service constraints]
-PERMISSIONS (optional): [branch/push/PR allowed? default: local commits only]
+SHIP MODE (optional): [local-only | expert-review | auto-merge; default: ask at the first approved gate]
+PERMISSIONS (optional): [anything beyond the ship mode; default: nothing else]
 MODELS (optional): [default: AGENTS.md model routing; "single" = no delegation]
 
 START / RESUME
@@ -63,19 +64,24 @@ data, read/write failures, recovery, keyboard use, accessible feedback, and
 agreed devices. Describe storage and durability limits honestly; never claim
 saved before the write succeeds.
 C3 - Agreed acceptance: demonstrate acceptance criteria, document limits and
-exact restart/resume steps, request explicit acceptance. Cloud identity, sync,
-deployment, and other infrastructure are optional follow-on features.
+exact restart/resume steps, request explicit acceptance. The static GitHub Pages
+deployment follows the ship mode; cloud identity, sync, backends, and other
+infrastructure are optional follow-on features.
 Work only within the approved checkpoint; do not add speculative features.
 
 AT EACH GATE
-Run pnpm verify and record its actual outcome. Verify the app runs and the
+Run pnpm verify and record its actual outcome. Run the speckit-reviewer local
+review, fix blockers, and report the remaining findings. Verify the app runs and the
 stated URL is reachable in your environment; state who can reach it (loopback
 is local only). Never fabricate a URL, preview, passing check, or review. Give
 the human at most three steps: how to reach/start the app, what to try, and what
 decision is needed. Update docs/STATUS.md and the spec in the same commit, with
 spec IDs, results, questions, limits, worktree state, and one next action. Make
 authorized local commits only, as coherent slices with conventional WHAT
-subjects and WHY bodies. Then STOP.
+subjects and WHY bodies. Then STOP for my local feedback. After I approve,
+ship per SHIP MODE with pnpm ship (AGENTS.md, Ship): expert-review stops at the
+PR URL; auto-merge waits for CI, merges, waits for the GitHub Pages deployment,
+and reports the live URL. If Pages is not set up, tell me the exact steps.
 
 AFTER FEEDBACK
 Record the human decision in docs/STATUS.md. Fold requested changes into
@@ -86,9 +92,9 @@ a new /speckit-specify feature with its own gate.
 
 LIMITS
 Do not guess domain, privacy, identity, consent, retention, or authorization
-rules. Do not add paid services, expose data, push, deploy, merge, create
-branches or remote resources, destructively change Git, or bypass checks without
-explicit permission. Copied starters do not inherit permission grants.
+rules. Do not add paid services, expose data, create remote resources,
+destructively change Git, or bypass checks without explicit permission. Branches,
+push, PRs, merges, and deployment only as the recorded SHIP MODE allows. Copied starters do not inherit permission grants.
 Constitution changes need human approval, /speckit-constitution, and an ADR.
 Silence is not approval. A fresh agent must be able to resume solely from the
 repository; process/server survival is not guaranteed, so document restart
