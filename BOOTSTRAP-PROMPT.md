@@ -9,6 +9,7 @@ leave optional fields unspecified when unknown.
 Build a small, useful product from this starter using Spec Kit.
 
 IDEA (required): [problem, intended users, desired outcome]
+NAME (optional): [product name; used for UI title, package name, storage keys, repository; default: ask]
 SPEC LANGUAGE (optional): [default: the language this brief is written in]
 UI LANGUAGE (optional): [default: the spec language; list any later locales]
 DEVICES (optional): [desktop/mobile/tablet, browsers, assistive needs]

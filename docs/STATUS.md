@@ -119,8 +119,17 @@ Spec Kit migration commands, run earlier on 2026-10-18 under the previous Node
   returned HTTP 200 with the demo page title. Loopback only, on the agent's machine.
 
 Not run: no `/speckit-*` command was executed end to end, because that needs a
-product brief. Hosted CI not rechecked; the earlier run reported
-`action_required`, zero jobs ([run 38950255088](https://github.com/markusrt/mvp-starter/actions/runs/38950255088)).
+product brief.
+
+Hosted CI (2026-10-18): pushing `0af0a7c` with `pnpm ship --mode expert-review`
+(the first real ship run; it reused PR #1) ran the workflow on GitHub for the
+first time. Push [run 39121570064](https://github.com/markusrt/mvp-starter/actions/runs/39121570064)
+and PR [run 39121572288](https://github.com/markusrt/mvp-starter/actions/runs/39121572288):
+`verify` passed, and `pages-check`/`deploy` were skipped as designed (not
+`main`). PR #1 was retitled, marked ready for review, and GitHub reports it
+`mergeable_state: clean`. Local `gh` 2.30.0 fails on `gh pr edit` (a GraphQL
+projectCards removal), so the REST API was used; `ship.mjs` does not depend on
+`pr edit`.
 
 Earlier 2026-10-16 evidence (pnpm audit clean, CodeQL zero alerts, live browser
 inspection) applies to unchanged application code. It was not re-executed.
