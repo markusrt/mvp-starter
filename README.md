@@ -41,7 +41,7 @@ verification and pending human review.
 
 ## First run and local development
 
-Prerequisites: Node **22.23.3** pinned in `.node-version`, `.nvmrc`, and
+Prerequisites: Node **24.21.0** pinned in `.node-version`, `.nvmrc`, and
 `engines`; pnpm **10.34.7** pinned in `packageManager`.
 
 Install that Node version (for example, `nvm install && nvm use` with nvm),

@@ -28,9 +28,17 @@
 - `biome.json` excludes tool-managed `.specify/`.
 - AGENTS.md, BOOTSTRAP-PROMPT.md, README.md, ADR 003 updated; ADR 004 added.
 
-Commands actually run on 2026-10-18 (Windows 11, portable Node 22.23.3 with
-corepack pnpm 10.34.7; the machine's default Node is 24.21.0, which the
-`engines` pin correctly rejects):
+2026-10-18 Node upgrade (owner request): pin raised from 22.23.3 to **24.21.0**
+(Active LTS) in `.node-version`, `.nvmrc`, `engines`; `@types/node` 22.20.5 →
+24.19.2; ADR 001, AGENTS.md, README updated. CI reads `.node-version`. On Node
+24.21.0 with pnpm 10.34.7: `pnpm install --frozen-lockfile` succeeded, **`pnpm
+verify` passed** (18 files linted, 13 modules/14 dependencies with no violations,
+12 unit tests, build, 8 Playwright scenarios), `pnpm audit`: no known
+vulnerabilities. Node 24.22.0 (2026-10-14) exists; 24.21.0 was chosen to match
+the owner's installed runtime.
+
+Spec Kit migration commands, run earlier on 2026-10-18 under the previous Node
+22.23.3 pin (portable Node with corepack pnpm 10.34.7):
 
 - `specify init sk-probe --integration claude --script sh --non-interactive`
   (specify-cli 1.2.1, scratch copy): generated `.claude/skills/speckit-*` (10)

@@ -95,7 +95,7 @@ pnpm lint:fix
 pnpm verify
 ```
 
-Pinned toolchain: Node `22.23.3` in `.node-version`, `.nvmrc`, and package
+Pinned toolchain: Node `24.21.0` in `.node-version`, `.nvmrc`, and package
 `engines`; pnpm `10.34.7` in `packageManager`. Spec Kit: `specify-cli` (evaluated
 with 1.2.1), which needs Python and `uv`. `pnpm verify` runs, in order, lint,
 typecheck, architecture, test, build, and test:e2e. Installing browser system
