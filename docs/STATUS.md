@@ -20,6 +20,26 @@
 
 ## What changed and actual evidence
 
+2026-10-19 kandidu retro fixes (owner request, committed directly to `main`):
+AGENTS.md gains "Working rules" (edit tool, scratch files, save work in git
+before discarding, no edits under running delegated checks) and "Context
+budget" (fresh session per gate and after planning, about 250k restart at a
+story boundary, targeted reads, logs to file), plus rules for: a local feature
+branch from the first commit, committing `specify init` output, the planning
+commit, one story at a time, FR IDs on tasks, analyze after feedback, chat in
+the spec language, resume after interruptions, STATUS claims checked against
+git, the post-merge next action, where the ship record goes, owner rules in
+the repo. New `docs/templates/gate-review.md` (short human gate page) and
+`gate-feedback.md` (feedback file, committed unchanged first); handoff step 6–8,
+the GATE task text, BOOTSTRAP-PROMPT.md, and README follow. Code:
+`E2E_PORT` for the Playwright preview port; `test:e2e` builds first and
+`verify` drops its separate build; `models:check` resolves `--cwd` before
+encoding it. Evidence: `pnpm models:check --cwd 'D:\\Development\\kandidu'`
+now finds the kandidu session (exit 1 for a real sonnet mismatch there; before:
+exit 2, no transcript); `E2E_PORT=4180 pnpm test:e2e` 8 passed; `pnpm verify`
+exit 0 (15 unit, 8 e2e), run with the untracked `docs/retro/` moved aside
+because its tool scripts fail Biome formatting.
+
 2026-10-19 delivery modes (owner request, committed directly to `main` at the
 owner's explicit instruction): constitution v2.2.0 adds "Delivery modes" (Full
 C1–C3, Light one C3 gate, Spike one C1 gate; the agent chooses in

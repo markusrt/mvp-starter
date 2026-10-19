@@ -22,10 +22,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "build": "vite build",
-    "test:e2e": "playwright test",
+    "test:e2e": "pnpm build && playwright test",
     "ship": "node scripts/ship.mjs",
     "models:check": "node scripts/check-model-routing.mjs",
-    "verify": "pnpm lint && pnpm typecheck && pnpm architecture && pnpm test && pnpm build && pnpm test:e2e"
+    "verify": "pnpm lint && pnpm typecheck && pnpm architecture && pnpm test && pnpm test:e2e"
   },
   "dependencies": {
     "react": "19.3.1",

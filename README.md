@@ -75,13 +75,14 @@ installation may require environment permissions.
 pnpm test         # fast unit checks
 pnpm test:watch   # interactive unit loop
 pnpm lint:fix     # modifies files; review the diff
-pnpm verify      # lint → typecheck → architecture → test → build → test:e2e
+pnpm verify      # lint → typecheck → architecture → test → test:e2e (builds first)
 ```
 
 These commands are not recorded execution evidence. See `docs/STATUS.md` for actual
 results and limitations, including unavailable tooling or browser checks in
-`docs/STATUS.md`. `pnpm test:e2e` expects a built app (`pnpm build` first);
-Playwright starts and waits for its own production-preview server on port 4173.
+`docs/STATUS.md`. `pnpm test:e2e` builds the app first, then Playwright starts
+and waits for its own production-preview server on port 4173. If that port is
+taken (for example by an editor after a reboot), set `E2E_PORT=4174`.
 Unit and browser runners fail when no tests are found.
 
 To restart after a session ends, run `pnpm dev --host 127.0.0.1 --port 5173 --strictPort`.
@@ -180,8 +181,6 @@ NOTES (optional): [what you already know, want, or exclude]
 4. /speckit-tasks, /speckit-analyze, fix its findings, commit the planning.
 5. /speckit-implement one story at a time (commit per story) to the next GATE,
    run the handoff, and stop.
-If the context grows beyond about 250k tokens, stop at the next story boundary
-with an "in progress" handoff in STATUS and tell me.
 ```
 
 ### Plan and implement a new feature from a free-text brief
@@ -212,9 +211,24 @@ CONSTRAINTS (optional): [budget, privacy, devices, deadline, services]
 4. /speckit-tasks, /speckit-analyze, fix its findings, commit the planning.
 5. /speckit-implement one story at a time (commit per story) to the next GATE,
    run the handoff, and stop.
-If the context grows beyond about 250k tokens, stop at the next story boundary
-with an "in progress" handoff in STATUS and tell me.
 ```
+
+## At a gate and while the agent works
+
+- At each gate the agent writes a short page for you,
+  `specs/NNN-*/review/C<n>.md` (what's new, URL, ≤3 steps, decisions), and
+  links it in its message. `docs/STATUS.md` is the agent's detailed log.
+- Answer with `specs/NNN-*/feedback/C<n>.md`, copied from
+  [docs/templates/gate-feedback.md](docs/templates/gate-feedback.md): decision,
+  ship mode, and one row per item with timing (before ship, next checkpoint,
+  later) and type. The agent commits it unchanged and maps each item to a fix,
+  a spec change, or the backlog. A short chat answer works too; the agent then
+  quotes it in STATUS.
+- To steer a running agent, send a normal message: it arrives at the agent's
+  next tool call. `/btw` only asks a side question and cannot change the work.
+  Send one consolidated instruction rather than several corrections.
+- Standing rules you give the agent belong in AGENTS.md ("Project working
+  rules"), not in agent memory.
 
 ## Ship and deploy
 

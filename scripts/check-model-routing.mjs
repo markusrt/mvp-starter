@@ -11,7 +11,7 @@
 // Exit codes: 0 ok, 1 routing mismatch, 2 no transcript found.
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 
 function parseArgs(argv) {
   const options = {
@@ -44,10 +44,11 @@ function parseArgs(argv) {
 }
 
 // Claude Code stores a project's transcripts under its cwd with every
-// non-alphanumeric character replaced by "-".
+// non-alphanumeric character replaced by "-". resolve() first: pnpm forwards a
+// Windows --cwd with doubled backslashes, which would add extra dashes.
 function projectDir(cwd) {
   const base = process.env.CLAUDE_CONFIG_DIR ?? join(homedir(), ".claude");
-  return join(base, "projects", cwd.replace(/[^A-Za-z0-9]/g, "-"));
+  return join(base, "projects", resolve(cwd).replace(/[^A-Za-z0-9]/g, "-"));
 }
 
 function newestSession(dir) {
