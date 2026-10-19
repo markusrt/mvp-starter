@@ -2,8 +2,8 @@
 
 ## Checkpoint and authorization
 
-- Updated: 2026-10-18.
-- Repository/branch: `markusrt/mvp-starter`, `copilot/populate-mvp-starter`.
+- Updated: 2026-10-19.
+- Repository/branch: `markusrt/mvp-starter`, `main`.
 - Checkpoint: **starter accepted; squash-merged to `main` via PR #1**. This is
   not C1 of any product. No product feature exists in `specs/`.
 - Active feature: none. The starter ships no sample spec (ADR 004).
@@ -19,6 +19,17 @@
   wording). Inspect actual `git status --short` and `git log` on resume.
 
 ## What changed and actual evidence
+
+2026-10-19 delivery modes (owner request, committed directly to `main` at the
+owner's explicit instruction): constitution v2.2.0 adds "Delivery modes" (Full
+C1–C3, Light one C3 gate, Spike one C1 gate; the agent chooses in
+`/speckit-plan`), recorded in [ADR 008](adr/008-delivery-modes.md). The tasks
+override, AGENTS.md, BOOTSTRAP-PROMPT.md, and ADR 003 follow it; README gains
+the section "Prompt templates for later features". The same amendment went into
+kandidu (its ADR 010). Edited by hand, not through `/speckit-constitution`:
+Spec Kit is not initialized in the starter repository. Evidence: documentation
+only; no `/speckit-tasks` run has used the new override yet, so the first real
+Light or Spike feature is the test.
 
 2026-10-18 init command (owner request, pushed directly to `main` at the owner's
 explicit instruction): README, BOOTSTRAP-PROMPT.md, and AGENTS.md now say
@@ -186,11 +197,12 @@ Fresh agent: read constitution → AGENTS → this status → active `specs/` fe
 - `.sh` scripts are generated locally per product by `specify init`
   (`--script sh|ps`); the starter commits none.
 - No license chosen. The repository is public and marked as a template.
-- Ship flow: the `main` deployment is verified live; `auto-merge` has not run
-  end to end yet.
-- **Exact next action:** owner creates the first product repository (`kandidu`)
-  from this template, runs `specify init --here --integration claude`, and starts
-  `claude --model opus` with the Kandidu bootstrap prompt.
+- Ship flow: the `main` deployment is verified live; `auto-merge` ran end to
+  end in kandidu (three gates, PR #1–#3, 2026-10-18/19).
+- Delivery modes Light and Spike are untested (no feature has used them yet).
+- **Exact next action:** none pending in the starter. Retro findings from the
+  kandidu run (`docs/retro/`, not committed) are triaged with the owner before
+  further template changes.
 
 ## Subsequent handoff schema
 
