@@ -22,7 +22,7 @@ choice between automatic merging and expert review. Constraints observed on
 ## Decision
 
 - **Local review and feedback first.** At every GATE the main session runs the
-  read-only `speckit-reviewer` subagent (opus, fresh context) on the branch diff,
+  read-only `reviewer` subagent (fresh context) on the branch diff and the owner steps,
   fixes blockers, then shows the human the running app. Shipping happens only
   after explicit approval.
 - **Ship modes**, recorded per product: `local-only`, `expert-review`,

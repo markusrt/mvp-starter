@@ -3,6 +3,9 @@
 Status: accepted by the repository owner on 2026-10-18 (requested change);
 amends ADR 003 and the constitution (v2.0.0). Evaluated with `specify-cli` 1.2.1.
 
+Note (2026-11-01): the installation and upgrade path in this ADR is superseded
+by [ADR 010](010-vendored-spec-kit.md); Spec Kit output is now vendored.
+
 ## Context
 
 The starter used a hand-written process: one `docs/SPEC.md` with a disposable

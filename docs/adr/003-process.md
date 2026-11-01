@@ -6,6 +6,9 @@ Spec Kit feature specs under `specs/`. Checkpoint execution and human decisions
 remain in `docs/STATUS.md`. [ADR 007](007-ship-flow.md) adds local review, ship
 modes, and GitHub Pages deployment. [ADR 008](008-delivery-modes.md) lets later
 features use fewer checkpoints (delivery modes Full, Light, Spike).
+[ADR 009](009-owner-centric-loop.md) puts the owner's loop on top: rounds and
+round reports instead of gate pages, agent-written feedback records, a bounded
+STATUS with an append-only journal, and the reviewer walking the owner's steps.
 
 ## Context
 
