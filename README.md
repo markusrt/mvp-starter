@@ -1,262 +1,163 @@
 # mvp-starter
 
-An agent-agnostic, local-first web starter: a verified tech stack, a
-[constitution](.specify/memory/constitution.md), and a checkpointed way of working
-built on [GitHub Spec Kit](https://github.com/github/spec-kit). You bring a product
-idea; an agent specifies, plans, and implements it autonomously and stops at
-checkpoints C1–C3 so you can review a running MVP. The included demo (create,
-check, delete tasks with explicit persistence/recovery) is a walking skeleton
-proving the stack, not a spec. See [docs/STATUS.md](docs/STATUS.md) for
-verification and pending human review.
+You describe a product. A small team of AI agents builds it, in rounds. After
+every round you get a link, a few things to try, and a couple of questions to
+decide. You never read code — you review the running thing and say what should
+change. The code lives in your own GitHub repository (the folder on GitHub
+that holds your project), built on a tested foundation, with every decision
+written down.
 
-## Make an independent project
+This is a template for building a first version (an MVP) of a **web app that
+works on phones and desktops** — opened in a browser, nothing to install. Other
+kinds of app (command-line tools, desktop apps, games) are planned as sibling
+templates (the reasoning is recorded in [decision 011](docs/adr/011-stack-family.md)).
 
-- [ ] `markusrt/mvp-starter` is marked as a template repository (checked
-  2026-10-18), so **Use this template** creates new repositories from `main`.
-  Changes reach new projects only after they are merged to `main`.
-- [ ] Create a repository from the enabled template, or make an ordinary source
-  copy into a new independent repository. Copying files does not require a
-  generator, account service, or preserved upstream Git history; do not delete or
-  rewrite an existing worktree/history to initialize a project.
-- [ ] Customize the package name, page title, UI copy, canonical docs, and an
-  application-owned storage key. Update adapter/tests/docs consistently; do not
-  run global string replacement or delete unrelated origin storage.
-- [ ] Review ownership, permissions, data needs, and licensing before publishing.
-  No license grant is invented by these instructions; select one only with
-  authority to do so.
-- [ ] Install Spec Kit once per machine (needs Python and
-  [uv](https://docs.astral.sh/uv/)): `uv tool install specify-cli`. Evaluated with
-  1.2.1; check with `specify --version`.
-- [ ] In the new repository, run:
+Honest limits: you need a computer you can install a few developer tools on
+(below), and the team cannot certify legal compliance of what it builds — it
+asks the right questions about personal data, but a human expert checks before
+real customer data goes in.
 
-  ```sh
-  specify init --here --force --integration claude --script sh
-  ```
+## What you need
 
-  - `--force` answers "merge with existing files?" with yes. The merge only
-    adds files: it keeps the shipped constitution, the tasks-template override,
-    the subagents, and every tracked file (verified with specify-cli 1.2.1).
-  - `--script sh` generates bash scripts. They run in Git Bash (which Claude
-    Code uses on Windows) and on Linux/macOS agents and runners. `ps` is
-    Windows-only in practice. `.gitattributes` keeps `*.sh` at LF even for
-    clones with `core.autocrlf=true`.
-  - For another agent, swap `claude` for its key (`codex`, `copilot`,
-    `cursor-agent`, …; `specify integration list` shows all).
+One-time setup on your computer. The team checks all of these when you start
+and tells you in plain words if something is missing.
 
-  Check that `git status --short` lists only new files (`??`), then commit the
-  result so any later agent can resume. Don't install the git-branching extension unless
-  branch creation is authorized.
-- [ ] Paste the [bootstrap prompt](BOOTSTRAP-PROMPT.md) with your idea. The
-  agent runs specify → clarify → plan → tasks → analyze → implement and stops
-  at the C1 gate with a running app. Reassess assignment permissions:
-  source-repository authorization is not copied.
+1. A [GitHub](https://github.com/signup) account (free).
+2. [Git](https://git-scm.com/downloads).
+3. The [GitHub CLI](https://cli.github.com/) (`gh`), the tool the team uses
+   to talk to GitHub. If it isn't logged in, the team gives you the one
+   command to run. Keep it current: GitHub has refused old versions before,
+   and the team warns you when yours is getting old.
+4. [Node.js](https://nodejs.org/) 24 (the team tells you if your version
+   differs from the one the project expects).
+5. [pnpm](https://pnpm.io/installation) 10.
+6. [Claude Code](https://claude.com/claude-code), the program the team runs
+   in. Engineers who prefer another AI coding agent: see
+   [docs/port-to-another-agent.md](docs/port-to-another-agent.md).
 
-## First run and local development
+## Start
 
-Prerequisites: Node **24.21.0** pinned in `.node-version`, `.nvmrc`, and
-`engines`; pnpm **10.34.7** pinned in `packageManager`.
+1. Click **Use this template** at the top of this page and create your own
+   repository (private is fine).
+2. Get it onto your computer: on your new repository's page, **Code → Open
+   with GitHub Desktop** (or any way you already know) puts a folder on your
+   machine.
+3. Open a terminal in that folder (right-click the folder → "Open in
+   Terminal" on most systems), type `claude`, press Enter, and say
+   **"let's start"** — in any language.
 
-Install that Node version (for example, `nvm install && nvm use` with nvm),
-then install pnpm with `npm install --global pnpm@10.34.7`. From the project root:
+The team checks your computer, asks you six short questions
+([what they are](BOOTSTRAP-PROMPT.md)), interviews you about the product a few
+questions at a time, and builds the first working slice. A complete first
+exchange, from "let's start" to the first round report, is in
+[docs/example-bootstrap.md](docs/example-bootstrap.md).
 
-```sh
-pnpm install --frozen-lockfile
-pnpm exec playwright install --with-deps chromium
-pnpm dev --host 127.0.0.1
+## How a round works
+
+```
+you describe  →  team asks (with recommendations)  →  team builds
+      ↑                                                    ↓
+you decide  ←  team reads back what it noted  ←  you try it, say anything
 ```
 
-Use the actual URL printed by the running server; verify it responds. A
-`127.0.0.1` URL works only on the machine running the server. A remote environment
-needs an explicitly configured port-forwarded URL and suitable access controls;
-no forwarded/public URL is implied or provided here. Browser/system dependency
-installation may require environment permissions.
+- Every round ends with a **round report** in chat: what is new, a link to
+  click, up to three things to try (with the screenshots the team's reviewer
+  took doing exactly that), and the decisions it needs from you — each with a
+  recommended answer, so "yes" is a complete reply.
+- You answer however you like: a sentence, a list, a screenshot, "the button is
+  in the wrong place". The team writes it down with the detail the next round
+  needs, reads it back to you, and asks again about anything you didn't answer
+  rather than guessing.
+- Three rounds have names because they ask for a formal decision: **First
+  working slice** (the riskiest part works end to end), **Solid and usable**
+  (survives reloads, bad input, phones, keyboard), **Ready to accept**. Small
+  follow-up features may have just one.
+- Things you can say at any time: *"where are we?"*, *"go on"*, *"here's my
+  feedback: …"*, *"stop here"*, *"publish it"*, *"be more technical with me"*
+  or *"just show me the app"*, *"update the team process from the template"*.
 
-```sh
-pnpm test         # fast unit checks
-pnpm test:watch   # interactive unit loop
-pnpm lint:fix     # modifies files; review the diff
-pnpm verify      # lint → typecheck → architecture → test → test:e2e (builds first)
-```
+## Your decisions
 
-These commands are not recorded execution evidence. See `docs/STATUS.md` for actual
-results and limitations, including unavailable tooling or browser checks in
-`docs/STATUS.md`. `pnpm test:e2e` builds the app first, then Playwright starts
-and waits for its own production-preview server on port 4173. If that port is
-taken (for example by an editor after a reboot), set `E2E_PORT=4174`.
-Unit and browser runners fail when no tests are found.
+- **What and in which order.** The team never changes what the product does
+  without asking. Technical choices inside the foundation are the team's; it
+  tells you about them in one sentence each.
+- **When it's good enough.** Each named round ends only when you say so.
+- **Publishing.** Chosen once at the start, changeable any time: *keep it on my
+  machine*; *open a pull request for someone to check* (GitHub's way of
+  showing a proposed change to a person before it goes live); or *publish
+  automatically* (after each approved round the team puts it on a free public
+  web address from GitHub, and data stays in each visitor's browser). If your
+  product handles personal or sensitive data, say so — the team recommends
+  keeping it on your machine until that is sorted out.
+- **Questions the team will always bring to you:** anything that costs money,
+  moves data off your computer, decides who can see what, or makes something
+  harder later. It will never ask you to choose a framework or read a diff.
 
-To restart after a session ends, run `pnpm dev --host 127.0.0.1 --port 5173 --strictPort`.
-Only if your environment offers authenticated forwarding, bind with
-`pnpm dev --host 0.0.0.0 --port 5173 --strictPort` and forward port 5173;
-check access controls and verify the actual forwarded URL before sharing it.
-No server or preview is guaranteed to survive an agent session. Production
-deployment happens only through the ship flow below.
+Everything the team decides is written into the repository (what is being
+built, decision records, round reports, your feedback in your own words), so
+a new session, or a human engineer later, can pick up where it left off.
 
-## Architecture and storage
+## Under the hood
 
-- `src/domain`: pure TypeScript; no external, UI, or storage imports.
-- `src/storage`: asynchronous `DemoStore`, Zod boundary validation, localStorage
-  adapter.
-- `src/ui`: React presentation; `src/ui/i18n`: typed message catalogs (`en`
-  default), error-code mapping; `src/main.tsx`: composition root and locale.
-  Domain and storage throw typed error codes, never user-facing text.
+For engineers. Nothing here is required to use the template.
 
-The demo owns `mvp-starter:demo:v1` and stores version 1
-`{version:1,items:[{id,title,completed}]}`. Stable unique IDs, nonempty trimmed
-titles of at most 120 characters, and boolean completion are validated.
-Corrupt/unsupported data and read failures block writes until successful retry
-or a deliberate confirmed own-key reset. Writes are shown as saved only on
-success. No migration is implemented; future transforms must be explicit/tested.
-
-This is discardable, nonsensitive demo storage: no durable-record guarantee,
-backup/export, cloud sync, or guaranteed offline application loading. Revisit
-storage before real product use. [ADR 002](docs/adr/002-storage.md) explains
-IndexedDB/cloud decision criteria and recovery limits.
-
-## Work with any agent
-
-Read [the constitution](.specify/memory/constitution.md) → [AGENTS.md](AGENTS.md) →
-`docs/STATUS.md` → the active `specs/NNN-*/` feature → relevant [ADRs](docs/adr/).
-Copy [BOOTSTRAP-PROMPT.md](BOOTSTRAP-PROMPT.md), provide an idea and optional
-language/devices/design/sensitivity/budget/permissions, and work through C1 risky
-core, C2 useful reload/recovery, and C3 agreed acceptance/handoff.
-
-| You | Agent |
-| --- | --- |
-| `specify init`, paste the prompt | `/speckit-specify` → `/speckit-clarify` (≤5 blocking questions) |
-| Answer blocking questions | `/speckit-plan` → `/speckit-tasks` → `/speckit-analyze` → `/speckit-implement` |
-| Review the running app at C1/C2/C3, decide | Fold feedback into the spec, refresh tasks, continue to the next gate |
-| Approve a gate | Ship per mode: PR for expert review, or auto-merge → GitHub Pages → live URL |
-
-Models: run the main session on Opus (`claude --model opus`) for specifying,
-planning, and judgment-heavy tasks. Tasks the planner tags `[ROUTINE]` are
-delegated to the `speckit-implementer` subagent on Sonnet
-(`.claude/agents/speckit-implementer.md`), and the main session reviews them
-([ADR 006](docs/adr/006-model-routing.md)).
-
-Write the brief in whatever language suits you: the agent talks to you and
-writes the spec in that language, and builds the UI in it as the default locale
-behind a message catalog. Headings, markers, and IDs inside specs stay English so
-Spec Kit commands keep working; all technical docs and code are English
-([ADR 005](docs/adr/005-language-policy.md)).
-
-Later features choose a delivery mode in `/speckit-plan` (constitution,
-[ADR 008](docs/adr/008-delivery-modes.md)): **Full** stops at C1, C2, and C3;
-**Light** (a small extension of a proven workflow) stops once at C3; **Spike**
-(an open question) stops once at C1 with a go/no-go result. The first feature
-is always Full.
-
-The checkpoints are enforced by GATE tasks from
-`.specify/templates/overrides/tasks-template.md`, which `/speckit-tasks` uses
-instead of Spec Kit's core template. No agent-specific memory is required;
-acceptance and external actions remain explicit human gates. Rationale:
-[ADR 004](docs/adr/004-spec-kit.md).
-
-## Prompt templates for later features
-
-Use these after the first feature is accepted. Start a fresh session for each
-(`claude --model opus`); the repository is the handoff. Write the prompt in the
-spec language: the agent talks to you in the language of your prompt.
-Replace the bracketed parts.
-
-### Implement a backlog item (for example R5 or R6)
-
-```text
-Read .specify/memory/constitution.md, AGENTS.md, docs/STATUS.md (header and
-"Exact next action"), and from specs/[NNN-feature]/spec.md only the backlog
-item [ID]. Read other spec, plan, or code sections only when a step needs them.
-
-ITEM: [backlog ID and title]
-NOTES (optional): [what you already know, want, or exclude]
-
-1. Check the worktree and STATUS. Update main (git pull --ff-only); local
-   commits on main that are not on origin yet go along with the next PR. Create
-   a branch from main named after the new Spec Kit feature.
-2. /speckit-specify for this item as a new feature (link the backlog ID), then
-   /speckit-clarify with at most five blocking questions, each with a
-   recommended answer.
-3. /speckit-plan. Choose the delivery mode (Full, Light, Spike; constitution
-   "Delivery modes"), record it with its reason in plan.md and STATUS, and tell
-   me in one line.
-4. /speckit-tasks, /speckit-analyze, fix its findings, commit the planning.
-5. /speckit-implement one story at a time (commit per story) to the next GATE,
-   run the handoff, and stop.
-```
-
-### Plan and implement a new feature from a free-text brief
-
-Examples: deployment with a real database, comments in Markdown with links.
-
-```text
-Read .specify/memory/constitution.md, AGENTS.md, docs/STATUS.md (header and
-"Exact next action"), and the ADRs the brief touches (for example 001 stack,
-002 storage, 007 ship flow). Search earlier specs only for what this feature
-changes; do not read them in full.
-
-BRIEF: [what should be possible, for whom, and why]
-CONSTRAINTS (optional): [budget, privacy, devices, deadline, services]
-
-1. Check the worktree and STATUS. Update main (git pull --ff-only); local
-   commits on main that are not on origin yet go along with the next PR. Create
-   a branch from main named after the new Spec Kit feature.
-2. /speckit-specify with the brief as a new feature; mark unknowns
-   [NEEDS CLARIFICATION]. /speckit-clarify: at most five blocking questions,
-   each with a recommended answer; wait for answers that change acceptance,
-   domain, privacy, retention, paid usage, external access, or architecture.
-3. /speckit-plan. Choose the delivery mode (Full, Light, Spike), record it with
-   its reason in plan.md and STATUS, and tell me in one line. If the plan
-   departs from a recorded decision (for example a backend or database, data
-   leaving the browser, accounts, a paid service), write the ADR draft and stop
-   for my approval before /speckit-tasks.
-4. /speckit-tasks, /speckit-analyze, fix its findings, commit the planning.
-5. /speckit-implement one story at a time (commit per story) to the next GATE,
-   run the handoff, and stop.
-```
-
-## At a gate and while the agent works
-
-- At each gate the agent writes a short page for you,
-  `specs/NNN-*/review/C<n>.md` (what's new, URL, ≤3 steps, decisions), and
-  links it in its message. `docs/STATUS.md` is the agent's detailed log.
-- Answer with `specs/NNN-*/feedback/C<n>.md`, copied from
-  [docs/templates/gate-feedback.md](docs/templates/gate-feedback.md): decision,
-  ship mode, and one row per item with timing (before ship, next checkpoint,
-  later) and type. The agent commits it unchanged and maps each item to a fix,
-  a spec change, or the backlog. A short chat answer works too; the agent then
-  quotes it in STATUS.
-- To steer a running agent, send a normal message: it arrives at the agent's
-  next tool call. `/btw` only asks a side question and cannot change the work.
-  Send one consolidated instruction rather than several corrections.
-- Standing rules you give the agent belong in AGENTS.md ("Project working
-  rules"), not in agent memory.
-
-## Ship and deploy
-
-At every gate the agent runs a local review (`speckit-reviewer` subagent),
-shows you the running app, and waits for your feedback. After you approve, it
-ships according to the product's ship mode ([ADR 007](docs/adr/007-ship-flow.md)):
-
-- `local-only`: local commits only.
-- `expert-review`: `pnpm ship --mode expert-review` pushes the feature branch
-  and opens or updates a PR. You (or an expert) review and merge.
-- `auto-merge`: `pnpm ship --mode auto-merge` also waits for CI, merges, waits
-  for the deployment, checks the live URL, and comments it on the PR.
-
-Every push to `main` that passes `verify` deploys `dist/` to GitHub Pages
-(`.github/workflows/ci.yml`). One-time setup per repository: **Settings → Pages →
-Build and deployment → Source: GitHub Actions**. Pages needs a public
-repository or GitHub Pro/Team, and the site is always public: fine for this
-local-first app, because user data stays in each visitor's browser. Until Pages
-is set up, CI skips the deployment and says why in the run summary, and
-`pnpm ship` prints the steps. Both modes need the `gh` CLI logged in.
+- **Process engine:** [GitHub Spec Kit](https://github.com/github/spec-kit)
+  1.2.1 (specify → clarify → plan → tasks → analyze → implement), vendored
+  under `.specify/` and `.claude/skills/speckit-*` so no `specify init` is
+  needed ([ADR 010](docs/adr/010-vendored-spec-kit.md)). The owner-facing loop
+  on top is defined in the first section of the
+  [constitution](.specify/memory/constitution.md) and in
+  [AGENTS.md](AGENTS.md) ([ADR 009](docs/adr/009-owner-centric-loop.md)).
+- **Team:** the lead (main session), `developer` and `reviewer` subagents
+  (`.claude/agents/`). Model size is expressed through tier aliases only; rules
+  describe roles and outcomes, not model behaviour
+  ([ADR 012](docs/adr/012-model-agnostic-rules.md)). Skills in
+  `.claude/skills/`: `team` (owner intents), `grilling`, `prototype`, `pr`,
+  `to-questionnaire`, `wait-what` (the last five from
+  [mattpocock/skills](https://github.com/mattpocock/skills), MIT; see
+  `THIRD-PARTY-NOTICES.md`).
+- **Glossary** (owner words → engine terms): ground rules → constitution; what
+  we're building → `specs/NNN-*/spec.md`; questions for you →
+  `grilling` then `/speckit-clarify`; work plan → `plan.md` + `tasks.md`; round
+  → the work between two GATE decisions; First working slice / Solid and
+  usable / Ready to accept → C1 / C2 / C3 GATE tasks; single review → Light
+  mode, exploration → Spike mode; publish choice → ship mode `local-only` /
+  `expert-review` / `auto-merge`; round report → `specs/NNN-*/review/round-<k>.md`;
+  your feedback → `specs/NNN-*/feedback/round-<k>.md` (agent-written, your
+  words quoted); decision record → `docs/adr/`.
+- **Stack:** Vite + React + TypeScript, `src/domain` (pure) / `src/storage`
+  (async port, Zod, localStorage adapter) / `src/ui` (React, i18n catalogs),
+  Biome, dependency-cruiser boundaries, Vitest, Playwright (desktop + Pixel 7),
+  GitHub Actions CI deploying `main` to GitHub Pages
+  ([ADR 001](docs/adr/001-stack.md), [002](docs/adr/002-storage.md),
+  [007](docs/adr/007-ship-flow.md)). The demo (a task list with explicit
+  persistence/recovery) is a walking skeleton the first round replaces.
+- **Dev commands:** `pnpm install --frozen-lockfile`,
+  `pnpm exec playwright install --with-deps chromium`,
+  `pnpm dev --host 127.0.0.1`, `pnpm test`, `pnpm lint:fix`, `pnpm verify`
+  (lint → typecheck → architecture → test → e2e; set `E2E_PORT` if 4173 is
+  taken), `pnpm ship --mode expert-review|auto-merge`.
+- **State files:** `docs/STATUS.md` (bounded current handoff),
+  `docs/journal/<feature>.md` (append-only evidence), `docs/retro.md` (notes
+  for the template), `.mvp-starter/manifest.json` (template version, stack,
+  owner experience, template-owned paths).
+- **Keeping a project current:** "update the team process from the template"
+  replaces only template-owned paths; see
+  [docs/update-from-template.md](docs/update-from-template.md). Spec Kit
+  upgrades happen there too.
+- **Other agents:** [docs/port-to-another-agent.md](docs/port-to-another-agent.md).
+- **Feeding back:** `docs/retro.md` entries become issues here via the
+  `team` skill ("send the retro"), using the templates in
+  `.github/ISSUE_TEMPLATE/`.
+- **Git without the team:** `gh repo create <name> --template markusrt/mvp-starter --private --clone`.
 
 ## Folder map
 
-`src/` holds domain, storage, UI, and their unit tests; `e2e/` holds desktop/mobile
-browser smoke tests. `.specify/` holds the constitution and template override
-(plus Spec Kit's scripts/templates after `specify init`), `specs/NNN-*/` holds
-one spec/plan/tasks set per feature (created by `/speckit-specify`; none ships
-with the starter), `docs/STATUS.md` is the live checkpoint handoff, and
-`docs/adr/` the decision record. Root configuration and
-`.github/workflows/ci.yml` run the same local/CI gate. No environment file or
-cloud credentials are needed.
+`src/` domain, storage, UI and unit tests; `e2e/` browser journeys;
+`.specify/` constitution, vendored Spec Kit scripts/templates and the tasks
+override; `.claude/` agents and skills; `specs/NNN-*/` one spec/plan/tasks set
+per feature plus `review/` and `feedback/` (none ships with the starter);
+`docs/` STATUS, journal, retro, templates, ADRs, example and appendix pages;
+`scripts/ship.mjs` publishing; `.github/` CI and issue templates;
+`.mvp-starter/manifest.json` template metadata. No environment file or cloud
+credentials are needed.

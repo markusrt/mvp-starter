@@ -3,6 +3,10 @@
 Status: accepted by the repository owner on 2026-10-18. Evaluated with
 `specify-cli` 1.2.1 and current Claude Code subagent/skill docs.
 
+Note (2026-11-01): superseded in part by [ADR 012](012-model-agnostic-rules.md):
+the routing check script is removed, the subagents are renamed `developer` and
+`reviewer`, and models are named by tier alias only.
+
 ## Context
 
 Planning, clarification, and architecture benefit most from the strongest

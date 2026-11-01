@@ -1,109 +1,117 @@
-# Copyable bootstrap prompt
+# Starting your product
 
-Prerequisite (human, once per product repository): run
-`specify init --here --force --integration claude --script sh` (other agents:
-swap `claude`; see README) and commit the result.
-Then copy the complete block below into that agent. Replace bracketed inputs;
-leave optional fields unspecified when unknown.
+You don't need to copy anything from this file. Start Claude Code in your
+project folder (README, "Start") and say **"let's start"** (in any language). The team checks your
+computer, asks you the questions below, and takes it from there. This page
+exists so you know what is coming.
+
+## Five questions the team will ask
+
+Answer in your own words; "I don't know yet" is a valid answer and the team
+will work with it.
+
+1. **The idea.** What should the product do, for whom, and what is better for
+   them afterwards? Two or three sentences are plenty.
+2. **The first users.** Who tries it first (you, a colleague, a customer)?
+   Real people's data or made-up test data?
+3. **What must be true for this to be worth it.** The one thing that, if it
+   doesn't work, means the product isn't worth building. The team builds and
+   tests that first.
+4. **Language.** Which language you want to talk in and see in the app. Default:
+   the language you answer in.
+5. **Publishing.** After each approved round, should the team *keep it on your
+   machine*, *open a pull request for someone to check* (GitHub's way of
+   showing a proposed change to a person before it goes live), or *publish
+   automatically* so you get a web address anyone can open? Default: publish
+   automatically (data stays in each visitor's browser; if your product handles
+   personal or sensitive data, say so and the team will recommend "keep it on
+   my machine").
+
+Then one question about you: *just show me the app* (the team decides technical
+matters and tells you in one sentence each) or *tell me the technical decisions
+too*. Default: just show me the app. You can change it any time.
+
+## What happens next
+
+The team asks follow-up questions about your product, a few at a time, each
+with a recommended answer so a plain "yes" works. Then it builds the first
+working slice and comes back with a **round report**: what is new, a link to
+click, up to three things to try, and the decisions it needs from you. You
+answer in chat however you like; the team writes it down and reads it back.
+Rounds continue until you say the product is ready.
+
+See a complete first exchange in [docs/example-bootstrap.md](docs/example-bootstrap.md).
+
+---
+
+## For the team (engine instructions)
+
+The `team` skill runs the start procedure, then this block. Keep it in sync
+with `AGENTS.md`.
 
 ```text
-Build a small, useful product from this starter using Spec Kit.
+Build a small, useful product from this starter using Spec Kit, inside the
+owner's loop (constitution, first section).
 
-IDEA (required): [problem, intended users, desired outcome]
-NAME (optional): [product name; used for UI title, package name, storage keys, repository; default: ask]
-SPEC LANGUAGE (optional): [default: the language this brief is written in]
-UI LANGUAGE (optional): [default: the spec language; list any later locales]
-DEVICES (optional): [desktop/mobile/tablet, browsers, assistive needs]
-DESIGN (optional): [references, constraints, existing assets]
-SENSITIVITY (optional): [data types, privacy/retention obligations; unknown is OK]
-BUDGET (optional): [money, time, hosting/service constraints]
-SHIP MODE (optional): [local-only | expert-review | auto-merge; default: ask at the first approved gate]
-PERMISSIONS (optional): [anything beyond the ship mode; default: nothing else]
-MODELS (optional): [default: AGENTS.md model routing; "single" = no delegation]
+INPUTS (from the bootstrap conversation; "not stated" where the owner gave none)
+IDEA, FIRST USERS, MUST BE TRUE, SPEC LANGUAGE, PUBLISH CHOICE,
+OWNER EXPERIENCE, NAME (ask or propose if not stated), plus anything the owner
+volunteered (devices, design, sensitivity, budget).
 
 START / RESUME
-Work from the repository, not remembered chat or vendor-specific memory. Read
-.specify/memory/constitution.md -> AGENTS.md -> docs/STATUS.md -> active
-specs/NNN-*/ files -> relevant ADRs. Inspect capabilities, branch/worktree,
-existing implementation, commands, and prior evidence before editing. Confirm
-the speckit-* commands are installed; if not, stop and ask the human to run
-specify init. If docs/STATUS.md names an active feature or pending gate, this is
-a RESUME: continue its next action within its gates and never re-specify it.
+Work from the repository, not remembered chat. Read
+.specify/memory/constitution.md -> AGENTS.md -> .mvp-starter/manifest.json ->
+docs/STATUS.md -> active specs/NNN-*/ files -> relevant ADRs. If STATUS names
+an active feature or pending gate, this is a RESUME: continue its next action
+within its gates and never re-specify it.
 
-LANGUAGE (constitution XII)
-Talk to the user and write spec.md prose in the spec language. Keep template
-headings, Spec Kit markers ([NEEDS CLARIFICATION], ## Clarifications, GATE) and
-IDs (US1, P1, FR-001, SC-001, T001) in English. Everything technical is English:
-plan, tasks, status, ADRs, code, tests, commits. Build the UI in the spec
-language as the default locale through a message catalog, never hardcoded.
+LANGUAGE (constitution XII): talk to the owner and write spec.md prose in the
+spec language; headings, markers, IDs and everything technical in English; UI
+default locale = spec language through the message catalog.
 
 NEW PRODUCT (no product feature in specs/ yet)
-1. /speckit-specify with the inputs above as the brief; record
-   **Spec Language** and the UI default locale in the spec. Order user stories so
-   P1 exercises the riskiest core assumption; record confirmed facts,
-   assumptions, exclusions, and [NEEDS CLARIFICATION] markers, never guesses.
-2. /speckit-clarify. Ask at most five blocking questions with a recommended
-   answer and trade-off each, and wait only for answers that affect acceptance,
-   domain, privacy, retention, paid usage, external access, or architecture.
-   Record nonblocking questions in docs/STATUS.md and proceed.
-3. /speckit-plan. Reuse this starter's stack and boundaries (ADR 001-002);
-   do not regenerate tooling. Departures need an ADR and approval.
-4. /speckit-tasks, then /speckit-analyze; resolve reported inconsistencies.
-   Tag only fully specified tasks [ROUTINE]; leave design-shaping ones untagged.
-5. /speckit-implement until the C1 GATE task, then hand off and STOP. Delegate
-   [ROUTINE] tasks per AGENTS.md model routing; review their diffs, keep
-   untagged tasks, verification, commits, and handoff in this session.
+1. Interview with the grilling skill until the frontier is empty: product
+   decisions only, recommended answer per question, facts looked up by you.
+   Record "MUST BE TRUE" as the riskiest assumption.
+2. /speckit-specify with the inputs and interview results as the brief; order
+   user stories so P1 exercises the riskiest assumption; record facts,
+   assumptions, exclusions and [NEEDS CLARIFICATION] markers, never guesses.
+3. /speckit-clarify as a residual pass (≤5 questions, each with a recommended
+   answer) only for what the interview left open and that affects acceptance,
+   domain, privacy, retention, paid usage, external access, or something the
+   owner can feel of the architecture. Nonblocking questions go to the round
+   report, and you proceed.
+4. /speckit-plan. Reuse the shipped foundation (ADR 001-002); departures need
+   an ADR and, when the owner can feel them, the owner's yes. Choose the
+   delivery mode (the first feature is always Full) and tell the owner in one
+   sentence.
+5. /speckit-tasks, then /speckit-analyze; fix inconsistencies. Tag only fully
+   specified tasks [ROUTINE]. Commit the planning slice.
+6. /speckit-implement to the C1 GATE, delegating [ROUTINE] tasks to the
+   developer and reviewing their diffs. Run the handoff procedure (AGENTS.md):
+   verify, running URL, round report, reviewer walk-through with screenshots,
+   STATUS + journal, commit, post the report, STOP.
 Starter demo code is a walking skeleton: adapt or remove it in the Setup
-phase, keeping relevant quality/failure coverage. Starter evidence and review
-gates are not product progress or blockers. Never clear existing browser data.
+phase. Starter evidence and gates are not product progress. Never clear
+existing browser data.
 
-DELIVERY CHECKPOINTS (GATE tasks in tasks.md)
-C1 - Risky core: smallest real end-to-end sample exercising the riskiest
-assumption, with synthetic discardable data and tested important failures. A
-mock or static screen is not proof.
-C2 - Useful and recoverable: approved workflow with reload/persistence, invalid
-data, read/write failures, recovery, keyboard use, accessible feedback, and
-agreed devices. Describe storage and durability limits honestly; never claim
-saved before the write succeeds.
-C3 - Agreed acceptance: demonstrate acceptance criteria, document limits and
-exact restart/resume steps, request explicit acceptance. The static GitHub Pages
-deployment follows the ship mode; cloud identity, sync, backends, and other
-infrastructure are optional follow-on features.
-Work only within the approved checkpoint; do not add speculative features.
+AT EACH GATE: the handoff procedure in AGENTS.md, nothing less. Never fabricate
+a URL, screenshot, passing check or review. Give the owner at most three steps
+and decisions with recommendations. STOP and wait.
 
-AT EACH GATE
-Run pnpm verify and record its actual outcome. Run the speckit-reviewer local
-review, fix blockers, and report the remaining findings. Verify the app runs and the
-stated URL is reachable in your environment; state who can reach it (loopback
-is local only). Never fabricate a URL, preview, passing check, or review. Give
-the human at most three steps: how to reach/start the app, what to try, and what
-decision is needed, on a short gate page specs/NNN-*/review/C<n>.md
-(docs/templates/gate-review.md) that your handoff message links. Update
-docs/STATUS.md and the spec in the same commit, with
-spec IDs, results, questions, limits, worktree state, and one next action. Make
-authorized local commits only, as coherent slices with conventional WHAT
-subjects and WHY bodies. Then STOP for my local feedback. After I approve,
-ship per SHIP MODE with pnpm ship (AGENTS.md, Ship): expert-review stops at the
-PR URL; auto-merge waits for CI, merges, waits for the GitHub Pages deployment,
-and reports the live URL. If Pages is not set up, tell me the exact steps.
+AFTER FEEDBACK: record it in specs/NNN-*/feedback/round-<k>.md (owner's words
+quoted, rNN ids, not-stated items), commit, read it back, ask the not-stated
+decisions again, triage, fold changes into spec.md (/speckit-clarify or direct
+edit with stable IDs; decisions as dated Clarifications bullets), refresh
+tasks (/speckit-tasks or /speckit-converge), /speckit-analyze, implement to
+the next GATE. On approval: tick the GATE, publish per PUBLISH CHOICE
+(AGENTS.md, Publish). After C3 acceptance: retro entry, then each new
+capability is a new /speckit-specify feature with the gates of its mode.
 
-AFTER FEEDBACK
-If I wrote specs/NNN-*/feedback/C<n>.md, commit it unchanged first; quote a
-chat decision verbatim. Record the human decision in docs/STATUS.md. Fold requested changes into
-spec.md with /speckit-clarify (stable IDs; never redefine accepted work
-silently), refresh remaining work with /speckit-tasks or /speckit-converge, then
-/speckit-implement to the next GATE. After C3 acceptance, each new capability is
-a new /speckit-specify feature with the gates of its delivery mode (Full, Light,
-or Spike; constitution "Delivery modes"). The first feature is always Full.
-
-LIMITS
-Do not guess domain, privacy, identity, consent, retention, or authorization
-rules. Do not add paid services, expose data, create remote resources,
-destructively change Git, or bypass checks without explicit permission. Work on
-a local feature branch from the first commit; push, PRs, merges, and deployment
-only as the recorded SHIP MODE allows. Copied starters do not inherit permission grants.
-Constitution changes need human approval, /speckit-constitution, and an ADR.
-Silence is not approval. A fresh agent must be able to resume solely from the
-repository; process/server survival is not guaranteed, so document restart
-commands and recheck the URL on resume.
+LIMITS: do not guess domain, privacy, identity, consent, retention or
+authorization rules; do not add paid services, expose data, create remote
+resources, destructively change Git, or bypass checks without explicit
+permission. Work on a local feature branch from the first commit; push, PRs,
+merges and deployment only as the recorded publish choice allows. Silence is
+not approval. A fresh agent must be able to resume solely from the repository.
 ```

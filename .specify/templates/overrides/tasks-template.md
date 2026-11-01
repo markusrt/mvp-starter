@@ -18,7 +18,7 @@ Story phases are grouped into the delivery checkpoints of the feature's
 **Delivery Mode** (recorded in plan.md; constitution "Delivery modes"): Full =
 C1, C2, C3; Light = one C3 gate; Spike = one C1 gate. Each checkpoint ends with a
 **GATE** task: the implementing agent MUST stop there and wait for an explicit
-human decision recorded in `docs/STATUS.md`.
+owner decision recorded in `docs/STATUS.md`.
 
 **Delivery Mode**: [Full | Light | Spike, copied from plan.md]
 
@@ -28,7 +28,7 @@ human decision recorded in `docs/STATUS.md`.
 - **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
 - **[ROUTINE]**: Fully specified by plan.md and the task text (exact files,
   existing patterns to follow, no open design choice), so it may be delegated
-  to a faster model (AGENTS.md, Model routing). Leave untagged anything that
+  to a faster model (AGENTS.md, Roles and models). Leave untagged anything that
   shapes domain rules, schemas/contracts, boundaries, security/privacy, or
   cross-cutting structure, plus every GATE task. When in doubt, leave it untagged.
 - Include exact file paths in descriptions
@@ -69,7 +69,7 @@ human decision recorded in `docs/STATUS.md`.
     the C2 behavior of what changed is tested inside the story phases.
   - Spike: the smallest end-to-end test of the open question, then ONE GATE
     labeled C1 that records a go/no-go result with evidence. No polish phase.
-    Later work is added by /speckit-tasks after the human's decision.
+    Later work is added by /speckit-tasks after the owner's decision.
 
   Keep every GATE task verbatim apart from the checkpoint label, the mode,
   and story IDs (a Spike GATE adds: record the go/no-go result and evidence).
@@ -121,7 +121,7 @@ human decision recorded in `docs/STATUS.md`.
 
 ### C1 GATE
 
-- [ ] T011 [GATE] C1 checkpoint: run `pnpm verify`; start `pnpm dev --host 127.0.0.1 --port 5173 --strictPort` and confirm the URL responds; update docs/STATUS.md (checkpoint, spec IDs, commands and outcomes, URL and who can reach it, questions, next action) and the spec in the same commit; write the human gate page specs/[###-feature-name]/review/C1.md from docs/templates/gate-review.md (≤3 review steps); commit; then **STOP** and wait for an explicit human decision. Do not start later phases until docs/STATUS.md records approval.
+- [ ] T011 [GATE] C1 checkpoint (owner-facing: "First working slice"): run `pnpm verify`; start `pnpm dev --host 127.0.0.1 --port 5173 --strictPort` and confirm the URL responds; draft the round report from docs/templates/round-report.md (≤3 owner steps); run the `reviewer` subagent (code review plus walk-through of the owner steps with screenshots) and fix blockers; save the report as specs/[###-feature-name]/review/round-<k>.md; update docs/STATUS.md (checkpoint, round counter, next action) and the spec in the same commit, and append evidence to docs/journal/[###-feature-name].md; commit; post the report in chat; then **STOP** and wait for an explicit owner decision. Do not start later phases until docs/STATUS.md records approval.
 
 ---
 
@@ -143,7 +143,7 @@ human decision recorded in `docs/STATUS.md`.
 
 ### C2 GATE
 
-- [ ] T016 [GATE] C2 checkpoint: same procedure as T011 for US1–US2; **STOP** for an explicit human decision.
+- [ ] T016 [GATE] C2 checkpoint (owner-facing: "Solid and usable"): same procedure as T011 for US1–US2; **STOP** for an explicit owner decision.
 
 ---
 
@@ -159,7 +159,7 @@ human decision recorded in `docs/STATUS.md`.
 - [ ] TXXX [P] [ROUTINE] Localization pass: no user-facing strings outside src/ui/i18n/, `Intl` formatting, layouts tolerate longer text at mobile width
 - [ ] TXXX Run quickstart.md validation
 - [ ] TXXX Document known limits and exact restart/resume steps in docs/STATUS.md and README.md
-- [ ] TXXX [GATE] C3 checkpoint: same procedure as T011; request explicit acceptance. **STOP**; never mark accepted without a recorded human decision.
+- [ ] TXXX [GATE] C3 checkpoint (owner-facing: "Ready to accept"): same procedure as T011; request explicit acceptance. **STOP**; never mark accepted without a recorded owner decision. After acceptance: write the retro entry (docs/retro.md) and offer to send it upstream.
 
 ---
 
@@ -171,7 +171,7 @@ human decision recorded in `docs/STATUS.md`.
 - **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
 - **User Stories (Phase 3+)**: All depend on Foundational phase completion
   - Proceed sequentially in priority order (P1 → P2 → P3)
-- **GATE tasks**: Block every later task until docs/STATUS.md records an explicit human decision
+- **GATE tasks**: Block every later task until docs/STATUS.md records an explicit owner decision
 - **Polish (Final Phase)**: Depends on all desired user stories being complete and approved
 
 ### Within Each User Story
@@ -200,11 +200,14 @@ human decision recorded in `docs/STATUS.md`.
 ### Light and Spike
 
 - Light: Setup/Foundational (only if needed) → stories in priority order → Polish → C3 GATE, **STOP**
-- Spike: the open question end to end → C1 GATE with go/no-go and evidence, **STOP**; the human decides whether it continues as Light or Full
+- Spike: the open question end to end → C1 GATE with go/no-go and evidence, **STOP**; the owner decides whether it continues as Light or Full
 
-Human feedback at a gate updates spec.md (via `/speckit-clarify` or a direct
-edit with stable IDs), then `/speckit-tasks` or `/speckit-converge` refreshes
-remaining work before implementation resumes.
+Owner feedback at a gate is recorded by the team in
+specs/[###-feature-name]/feedback/round-<k>.md (owner's words quoted, global
+rNN ids), then updates spec.md (via `/speckit-clarify` or a direct edit with
+stable IDs, decisions also as dated bullets under `## Clarifications`), then
+`/speckit-tasks` or `/speckit-converge` refreshes remaining work before
+implementation resumes.
 
 ---
 
