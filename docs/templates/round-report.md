@@ -1,7 +1,8 @@
 <!--
-  Round report for the owner (AGENTS.md, handoff step 6). The lead posts this
-  text in chat AND saves it as specs/NNN-*/review/round-<k>.md (k = the
-  round's global number, see feedback-round.md). Write it in the spec
+  Round report for the owner (AGENTS.md, handoff steps 4-7). The lead posts
+  this text in chat AND saves it as specs/NNN-*/review/round-<k>.md (k = the
+  round's global number, see feedback-round.md), with the reviewer's
+  screenshots in specs/NNN-*/review/round-<k>/. Write it in the spec
   language, keep it at most 30 lines, and delete this comment. No spec IDs,
   task IDs or file paths in the owner's view unless owner_experience is
   "technical"; evidence and history go to docs/journal/.
@@ -20,8 +21,8 @@ me and I will start it again."]
 2. [What to do and what should happen]
 3. [What to do and what should happen]
 
-[Screenshots: one line pointing at the screenshots the reviewer took, or
-inline images where the chat allows it]
+Screenshots: [one line per screenshot saying what it shows; they are saved
+with this round and in the pull request, if one exists]
 
 **Your decisions**
 - Q1 [Decision, e.g. "Is this round good enough to move on / accept?"]

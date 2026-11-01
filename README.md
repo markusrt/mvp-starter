@@ -3,13 +3,14 @@
 You describe a product. A small team of AI agents builds it, in rounds. After
 every round you get a link, a few things to try, and a couple of questions to
 decide. You never read code — you review the running thing and say what should
-change. The code lives in your own GitHub repository, built on a tested
-foundation, with every decision written down.
+change. The code lives in your own GitHub repository (the folder on GitHub
+that holds your project), built on a tested foundation, with every decision
+written down.
 
 This is a template for building a first version (an MVP) of a **web app that
 works on phones and desktops** — opened in a browser, nothing to install. Other
 kinds of app (command-line tools, desktop apps, games) are planned as sibling
-templates; see [ADR 011](docs/adr/011-stack-family.md).
+templates (the reasoning is recorded in [decision 011](docs/adr/011-stack-family.md)).
 
 Honest limits: you need a computer you can install a few developer tools on
 (below), and the team cannot certify legal compliance of what it builds — it
@@ -23,25 +24,29 @@ and tells you in plain words if something is missing.
 
 1. A [GitHub](https://github.com/signup) account (free).
 2. [Git](https://git-scm.com/downloads).
-3. The [GitHub CLI](https://cli.github.com/) (`gh`), logged in with
-   `gh auth login`. Keep it current; GitHub has refused old versions before,
+3. The [GitHub CLI](https://cli.github.com/) (`gh`), the tool the team uses
+   to talk to GitHub. If it isn't logged in, the team gives you the one
+   command to run. Keep it current: GitHub has refused old versions before,
    and the team warns you when yours is getting old.
-4. [Node.js](https://nodejs.org/) 24 (the exact version is pinned in the
-   repository; the team tells you if yours differs).
+4. [Node.js](https://nodejs.org/) 24 (the team tells you if your version
+   differs from the one the project expects).
 5. [pnpm](https://pnpm.io/installation) 10.
-6. [Claude Code](https://claude.com/claude-code) — the agent runtime the team
-   runs in. Other agents can use the engine underneath; see
+6. [Claude Code](https://claude.com/claude-code), the program the team runs
+   in. Engineers who prefer another AI coding agent: see
    [docs/port-to-another-agent.md](docs/port-to-another-agent.md).
 
 ## Start
 
 1. Click **Use this template** at the top of this page and create your own
    repository (private is fine).
-2. Open it on your computer (GitHub's **Code → Open with** works, or
-   `gh repo clone <you>/<name>`), and start Claude Code in that folder.
-3. Say **"let's start"** — in any language.
+2. Get it onto your computer: on your new repository's page, **Code → Open
+   with GitHub Desktop** (or any way you already know) puts a folder on your
+   machine.
+3. Open a terminal in that folder (right-click the folder → "Open in
+   Terminal" on most systems), type `claude`, press Enter, and say
+   **"let's start"** — in any language.
 
-The team checks your computer, asks you five questions
+The team checks your computer, asks you six short questions
 ([what they are](BOOTSTRAP-PROMPT.md)), interviews you about the product a few
 questions at a time, and builds the first working slice. A complete first
 exchange, from "let's start" to the first round report, is in
@@ -78,17 +83,19 @@ you decide  ←  team reads back what it noted  ←  you try it, say anything
   tells you about them in one sentence each.
 - **When it's good enough.** Each named round ends only when you say so.
 - **Publishing.** Chosen once at the start, changeable any time: *keep it on my
-  machine*, *open a pull request for someone to check*, or *publish
-  automatically* (a public link on GitHub Pages after each approved round;
-  data stays in each visitor's browser). If your product handles sensitive
-  data, say so — the team recommends keeping it local.
+  machine*; *open a pull request for someone to check* (GitHub's way of
+  showing a proposed change to a person before it goes live); or *publish
+  automatically* (after each approved round the team puts it on a free public
+  web address from GitHub, and data stays in each visitor's browser). If your
+  product handles personal or sensitive data, say so — the team recommends
+  keeping it on your machine until that is sorted out.
 - **Questions the team will always bring to you:** anything that costs money,
   moves data off your computer, decides who can see what, or makes something
   harder later. It will never ask you to choose a framework or read a diff.
 
-Everything the team decides is written into the repository (specs, decision
-records, round reports, your feedback in your own words), so a new session, or
-a human engineer later, can pick up where it left off.
+Everything the team decides is written into the repository (what is being
+built, decision records, round reports, your feedback in your own words), so
+a new session, or a human engineer later, can pick up where it left off.
 
 ## Under the hood
 

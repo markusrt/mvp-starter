@@ -6,11 +6,13 @@ commands, outcomes, review findings and screenshots go to
 
 ## Product
 
-- Product: mvp-starter (the template itself; no product yet)
-- Repository/branch: `markusrt/mvp-starter`, `main`
+- Product: mvp-starter (the template itself; no product yet). Products
+  created from the template rewrite this section on "let's start".
+- Repository/branch: `markusrt/mvp-starter`, `main` (template changes merge
+  there through PRs)
 - Spec language: en
 - Publish choice: expert-review (the template's own changes go through PRs)
-- Owner experience: technical
+- Owner experience: see `.mvp-starter/manifest.json` (single source)
 
 ## Where we are
 
@@ -30,7 +32,7 @@ commands, outcomes, review findings and screenshots go to
 
 ## Worktree
 
-- Clean on `main` after merge; see `git status`.
+- See `git status`; nothing uncommitted is expected on `main`.
 
 ## Limits
 

@@ -41,6 +41,10 @@ target.
    name <AGENT NAME>, and add a line to .mvp-starter/manifest.json:
    "agent_runtime": "<key>".
 7. Run pnpm verify. Report what could not be translated one-to-one.
+8. Note in docs/adr/ that the Spec Kit files and the target's instruction
+   files now differ from the template's owned paths; "update from template"
+   must re-apply steps 2-6 after each update (or the project drops those
+   paths from template_owned_paths in its manifest).
 ```
 
 What you lose without subagents: the independent reviewer with fresh context

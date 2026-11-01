@@ -6,7 +6,7 @@ They were adapted for this template as follows (the `agents/openai.yaml` file wa
 
 - `grilling` — copied unchanged.
 - `prototype` — `UI.md` dropped and the SKILL.md rewritten to describe only the LOGIC branch: a single self-contained HTML file written to the scratchpad/temp directory and offered to the owner, kept on a `prototype/<name>` branch only if the owner says so; references to an issue tracker removed; `LOGIC.md` adjusted accordingly (UI.md pointer removed, capture step reworded).
-- `pr` — copied unchanged (including `CREDITS.md`).
+- `pr` — `CREDITS.md` kept.
 - `to-questionnaire` — copied unchanged.
 - `pr` — the reference to `GLOSSARY.md` replaced by the vocabulary of the active spec and the product's own words.
 - `wait-what` — the reference to `GLOSSARY.md` / `GLOSSARY-MAP.md` replaced by the vocabulary of the active spec (`specs/NNN-*/spec.md`) and the product's own words.

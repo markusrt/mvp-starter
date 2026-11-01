@@ -1,7 +1,7 @@
 # Starting your product
 
-You don't need to copy anything from this file. Open your new repository in
-Claude Code and say **"let's start"** (in any language). The team checks your
+You don't need to copy anything from this file. Start Claude Code in your
+project folder (README, "Start") and say **"let's start"** (in any language). The team checks your
 computer, asks you the questions below, and takes it from there. This page
 exists so you know what is coming.
 
@@ -20,10 +20,12 @@ will work with it.
 4. **Language.** Which language you want to talk in and see in the app. Default:
    the language you answer in.
 5. **Publishing.** After each approved round, should the team *keep it on your
-   machine*, *open a pull request for someone to check*, or *publish
-   automatically* so you get a link anyone can open? Default: publish
+   machine*, *open a pull request for someone to check* (GitHub's way of
+   showing a proposed change to a person before it goes live), or *publish
+   automatically* so you get a web address anyone can open? Default: publish
    automatically (data stays in each visitor's browser; if your product handles
-   sensitive data, say so and the team will recommend "keep it on my machine").
+   personal or sensitive data, say so and the team will recommend "keep it on
+   my machine").
 
 Then one question about you: *just show me the app* (the team decides technical
 matters and tells you in one sentence each) or *tell me the technical decisions

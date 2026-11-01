@@ -18,7 +18,7 @@ Story phases are grouped into the delivery checkpoints of the feature's
 **Delivery Mode** (recorded in plan.md; constitution "Delivery modes"): Full =
 C1, C2, C3; Light = one C3 gate; Spike = one C1 gate. Each checkpoint ends with a
 **GATE** task: the implementing agent MUST stop there and wait for an explicit
-human decision recorded in `docs/STATUS.md`.
+owner decision recorded in `docs/STATUS.md`.
 
 **Delivery Mode**: [Full | Light | Spike, copied from plan.md]
 
@@ -28,7 +28,7 @@ human decision recorded in `docs/STATUS.md`.
 - **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
 - **[ROUTINE]**: Fully specified by plan.md and the task text (exact files,
   existing patterns to follow, no open design choice), so it may be delegated
-  to a faster model (AGENTS.md, Model routing). Leave untagged anything that
+  to a faster model (AGENTS.md, Roles and models). Leave untagged anything that
   shapes domain rules, schemas/contracts, boundaries, security/privacy, or
   cross-cutting structure, plus every GATE task. When in doubt, leave it untagged.
 - Include exact file paths in descriptions
@@ -69,7 +69,7 @@ human decision recorded in `docs/STATUS.md`.
     the C2 behavior of what changed is tested inside the story phases.
   - Spike: the smallest end-to-end test of the open question, then ONE GATE
     labeled C1 that records a go/no-go result with evidence. No polish phase.
-    Later work is added by /speckit-tasks after the human's decision.
+    Later work is added by /speckit-tasks after the owner's decision.
 
   Keep every GATE task verbatim apart from the checkpoint label, the mode,
   and story IDs (a Spike GATE adds: record the go/no-go result and evidence).
@@ -171,7 +171,7 @@ human decision recorded in `docs/STATUS.md`.
 - **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
 - **User Stories (Phase 3+)**: All depend on Foundational phase completion
   - Proceed sequentially in priority order (P1 → P2 → P3)
-- **GATE tasks**: Block every later task until docs/STATUS.md records an explicit human decision
+- **GATE tasks**: Block every later task until docs/STATUS.md records an explicit owner decision
 - **Polish (Final Phase)**: Depends on all desired user stories being complete and approved
 
 ### Within Each User Story
@@ -200,7 +200,7 @@ human decision recorded in `docs/STATUS.md`.
 ### Light and Spike
 
 - Light: Setup/Foundational (only if needed) → stories in priority order → Polish → C3 GATE, **STOP**
-- Spike: the open question end to end → C1 GATE with go/no-go and evidence, **STOP**; the human decides whether it continues as Light or Full
+- Spike: the open question end to end → C1 GATE with go/no-go and evidence, **STOP**; the owner decides whether it continues as Light or Full
 
 Owner feedback at a gate is recorded by the team in
 specs/[###-feature-name]/feedback/round-<k>.md (owner's words quoted, global

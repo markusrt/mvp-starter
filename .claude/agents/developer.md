@@ -2,7 +2,6 @@
 name: developer
 description: Implements one or more [ROUTINE] tasks from a Spec Kit tasks.md, with their tests, when the lead delegates them during /speckit-implement. Not for untagged tasks, GATE tasks, planning, or spec changes.
 model: sonnet
-effort: medium
 tools: Read, Edit, Write, Glob, Grep, Bash
 ---
 

@@ -27,7 +27,11 @@ Read, in order:
 
 Inspect the worktree, branch, available tools, package scripts, and existing
 work. Spec Kit (`.specify/scripts/bash/`, `.claude/skills/speckit-*`) ships
-with the template; nobody runs `specify init`. Do not infer completion from a
+with the template; nobody runs `specify init`. Spec Kit finds the active
+feature through the untracked `.specify/feature.json`; on a fresh clone or
+machine set `SPECIFY_FEATURE_DIRECTORY=specs/<active feature from STATUS>`
+in the environment of the `/speckit-*` commands before running them. The
+lead, not Spec Kit, creates feature branches (see Publish). Do not infer completion from a
 document or prior conversation: compare claims with files and recorded
 evidence. Resume from the next action in STATUS; repository documents, not chat
 history, are the handoff.
@@ -103,14 +107,15 @@ reports a stop.
 
 | Role | Where | Model |
 | --- | --- | --- |
-| Lead | the main session | the runtime's largest general tier (Claude Code: `opus`; start with `claude --model opus`) |
+| Lead | the main session | the runtime's largest general tier (Claude Code: `opus`) |
 | Developer | `.claude/agents/developer.md` | `sonnet` |
 | Reviewer | `.claude/agents/reviewer.md` | `opus`, read-only, fresh context |
 
 Models are named only through tier aliases, never versions. Instructions
-describe responsibilities and outcomes, not model behaviour. If the lead
-notices it is running on a smaller tier than the table says, it tells the owner
-once in one sentence and continues; it does not stop the round for that.
+describe responsibilities and outcomes, not model behaviour. The `team`
+skill's start check reports the lead's tier; if it is smaller than the table
+says, the lead tells the owner once, with the one thing to type (`/model
+opus`), and continues either way.
 
 ### Language (constitution XII, ADR 005)
 
@@ -172,8 +177,10 @@ upstream issue; product-only rules go in its "Project amendments" section.
   (tests, git, generators) and for bulk mechanical changes only, not for
   scripted edits of single files. Never run commands that wait for stdin.
 - Scratch and probe files go to the session's scratchpad or temp directory,
-  never into `src/` or other tracked folders. Reviewer screenshots live there
-  too; the journal links them by path, the PR carries them as attachments.
+  never into `src/` or other tracked folders. The one exception is reviewer
+  screenshots: they are committed under `specs/NNN-*/review/round-<k>/` so
+  the round report, the journal and the PR can link them and they survive
+  the session.
 - Before discarding or reshaping uncommitted work, save it in git
   (`git stash push -u`, or `git commit-tree` into `refs/backup/<name>`), not
   only in temp files. Delete such refs once the work is committed.
@@ -191,10 +198,11 @@ one-line "Why". Empty in the template. -->
 Every turn reprocesses the whole conversation, so session size drives cost.
 The repository is the handoff; a long chat adds cost, not information.
 
-- Start a fresh session at every GATE and after the planning commit. The owner
-  does not have to notice: the round report ends with "I will pick this up in a
-  fresh session; the repository has everything", and the next session resumes
-  from STATUS.
+- Prefer a fresh session at every GATE and after the planning commit. Only
+  the owner can start one, so the round report ends with: "When you come
+  back, a fresh start is best: type `/clear` (or restart Claude Code) and
+  then just answer; the repository has everything." The next round resumes
+  from STATUS in whatever session the owner's message arrives in.
 - Within a checkpoint, once the context passes about 250k tokens, stop at the
   next story boundary, record "`C<n>` in progress" in STATUS (done, started
   with open points, not started, known problems, checks), commit, and tell the
@@ -278,29 +286,33 @@ Exact handoff procedure (run at every GATE task):
    URL and its access scope. Never promise process survival or remote access
    from loopback.
 4. Draft the round report from `docs/templates/round-report.md` (spec language,
-   ≤30 lines, ≤3 owner steps, decisions with recommendations). Increment the
-   round counter in STATUS.
+   ≤30 lines, ≤3 owner steps, decisions with recommendations). The round
+   number `k` is STATUS "Rounds held" + 1; it is written to STATUS in step 6,
+   not before.
 5. Independent review: run the `reviewer` subagent with the branch diff, the
-   draft report, the URL and a scratchpad path for screenshots (agents without
+   draft report, the URL, a scratchpad path for its script and
+   `specs/NNN-*/review/round-<k>/` as the screenshot folder (agents without
    subagents: do the same checklist and walk-through yourself in a fresh pass).
    Fix blockers and should-fix findings, rerun the affected checks, and keep
    the remaining findings in the journal. If the reviewer could not perform an
    owner step as written, fix the step or the product before continuing.
-6. Save the report as `specs/NNN-*/review/round-<k>.md`. Update
-   `docs/STATUS.md` (feature, checkpoint, round, counters, worktree, one exact
-   next action) and the spec in the same commit; append evidence (commands,
-   outcomes, review findings, screenshot paths, context size) to
-   `docs/journal/<feature>.md`. Check every state claim against git and the
-   running system.
+6. Save the report as `specs/NNN-*/review/round-<k>.md` with the screenshots
+   beside it. Update `docs/STATUS.md` (feature, checkpoint, rounds held,
+   worktree, one exact next action) and the spec in the same commit; append
+   evidence (commands, outcomes, review findings, screenshot paths, context
+   size) to `docs/journal/<feature>.md`. Check every state claim against git
+   and the running system.
 7. Review the diff for secrets and artifacts; make coherent authorized commits.
-   Post the round report in chat with the screenshots. Stop and wait; a fresh
-   agent may not advance past the pending gate.
+   Post the round report in chat. Screenshots: for `plain`, describe in one
+   line each what they show and say they are saved with the round (and in the
+   pull request, if one exists); for `technical`, also give their paths. Stop
+   and wait; a fresh agent may not advance past the pending gate.
 8. Feedback: the owner answers in chat in any form (or edits a spec inline).
    - Write `specs/NNN-*/feedback/round-<k>.md` from
      `docs/templates/feedback-round.md`: the owner's words quoted unchanged,
      global `rNN` ids, timing, type, reference; **not stated** for anything
-     the owner did not answer. Commit it before triage
-     (`docs: record round <k> feedback`).
+     the owner did not answer. Update STATUS "Counters" (last feedback id)
+     and commit both before triage (`docs: record round <k> feedback`).
    - Read the record back to the owner in chat (items, your reading, open
      points) and ask the not-stated decisions again. Fix the record if the
      owner corrects it; never infer an answer.
@@ -312,7 +324,7 @@ Exact handoff procedure (run at every GATE task):
    - With changes: fold them in, `/speckit-analyze`, implement, back to step 2
      for the next round. On approval: record it in STATUS, tick the GATE task,
      and publish per the publish choice.
-9. After C3 acceptance: write 3–5 bullets to `docs/retro.md` (what slowed the
+9. After each accepted checkpoint (at least after C3): write 3–5 bullets to `docs/retro.md` (what slowed the
    team down, which template rule would have helped, which rule was ambiguous)
    and offer the owner to send them upstream (`team` skill, "send retro").
 
@@ -327,8 +339,10 @@ conversation. Owner-facing names map to the engine's ship modes:
 | "open a pull request for someone to check" | `expert-review` | `pnpm ship --mode expert-review`: push, create/reuse the PR, report its URL, stop. A human reviews and merges. |
 | "publish automatically" | `auto-merge` | `pnpm ship --mode auto-merge`: push, PR, wait for CI, merge (rebase by default), wait for the `main` run including the Pages deploy, verify the live URL, comment it on the PR, tell the owner the link. Default when the owner does not choose. |
 
-- Work on a feature branch named after the Spec Kit feature (for example
-  `001-booking-mvp`), created before the feature's first commit. After a
+- The lead creates the feature branch before the feature's first commit
+  (Spec Kit 1.2.1 does not branch on its own): `NNN-<short-name>` with the
+  next sequential number, matching the `specs/NNN-*` directory
+  `/speckit-specify` will create (for example `001-booking-mvp`). After a
   merge, continue on a new branch from the updated `main` (for example
   `001-booking-mvp-c2`).
 - Before publishing, write the STATUS "Exact next action" as the state after the

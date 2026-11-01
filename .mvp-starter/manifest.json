@@ -19,6 +19,7 @@
     ".specify/integration.json",
     ".specify/memory/constitution.md",
     "AGENTS.md",
+    "BOOTSTRAP-PROMPT.md",
     "CLAUDE.md",
     "THIRD-PARTY-NOTICES.md",
     "docs/templates/",
@@ -30,7 +31,10 @@
     ".github/ISSUE_TEMPLATE/"
   ],
   "project_owned_exceptions": [
-    ".specify/memory/constitution.md#Project amendments"
+    ".specify/memory/constitution.md#Project amendments",
+    "AGENTS.md#Project working rules",
+    ".mvp-starter/manifest.json#owner_experience",
+    ".mvp-starter/manifest.json#agent_runtime"
   ],
   "minimum_tool_versions": {
     "node": "24.21.0",

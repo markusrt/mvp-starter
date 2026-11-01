@@ -26,8 +26,10 @@ by hand (bottom).
    retro, product ADRs, CI secrets).
 4. Update `template_version` and `spec_kit_version` in the project's manifest;
    keep `owner_experience`, `stack` and project-specific keys.
-5. Run `pnpm verify`. If the template changed the stack layer (rare; it is
-   not in the owned paths unless an ADR says so), stop and explain.
+5. Run `pnpm verify`. The only stack-specific files in the owned paths are
+   `scripts/ship.mjs` and `.github/workflows/ci.yml`; if the template changed
+   anything else in the stack layer, that is a separate, explained change,
+   not part of an update.
 6. Tell the owner, in plain words, what changed in how the team works (for
    example: "round reports now include screenshots", "new question at the
    start about publishing"). Then follow the publish choice: local commit, or

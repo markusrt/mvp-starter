@@ -36,7 +36,11 @@ an active feature, this is a resume: skip to **Status** and then **Next round**.
 1. **Check the machine** (silently; report only problems).
    - `node --version` against `minimum_tool_versions.node` in
      `.mvp-starter/manifest.json`; `pnpm --version`; `git --version`;
-     `gh --version` and `gh auth status`.
+     `gh --version` and `gh auth status` (if not logged in, give the owner
+     the one command: `gh auth login`, and say why).
+   - Your own model tier: if it is smaller than the lead's tier in AGENTS.md
+     "Roles and models", tell the owner once, with the one thing to type
+     (`/model opus`), and continue either way.
    - GitHub CLI freshness: compare the installed `gh` version with the latest
      release (`gh api repos/cli/cli/releases/latest --jq .tag_name`; if that
      call fails, skip the comparison). Warn the owner in one sentence when the
@@ -52,18 +56,19 @@ an active feature, this is a resume: skip to **Status** and then **Next round**.
    - For anything missing, say what is missing, the official download link
      from the README, and that you will continue as soon as it is there.
      Do not continue the bootstrap on a machine that cannot run `pnpm verify`.
-2. **Ask the bootstrap questions** (`BOOTSTRAP-PROMPT.md`, "Five questions"):
+2. **Ask the bootstrap questions** (`BOOTSTRAP-PROMPT.md`, "Five questions the team will ask"):
    idea, who it is for, what must be true for it to be worth it, language,
    publish choice. Then one more: how technical the team should be with them
    (plain / technical; recommend plain). Ask them as one numbered round with a
    recommendation each; accept partial answers and mark the rest not stated.
    Read back what you understood.
-3. **Record** the publish choice and spec language in `docs/STATUS.md`, and
-   `owner_experience` in `.mvp-starter/manifest.json`.
-4. **Rename** the product: package name, page title, `<html lang>`, UI copy
-   and the storage key (`src/storage`, its tests, `index.html`,
-   `package.json`), from the product name the owner gave (ask for one if they
-   did not; recommend one derived from the idea). No global search-and-replace.
+3. **Record**: rewrite the "Product" section of `docs/STATUS.md` (product
+   name, repository, spec language, publish choice) and set `owner_experience`
+   in `.mvp-starter/manifest.json`.
+4. **Name** the product: ask for a name if the owner gave none (recommend one
+   derived from the idea). The rename of package, title, `<html lang>` and
+   storage key is task T001 of the first feature's Setup phase, not a
+   bootstrap step.
 5. **Publishing setup**, only if the publish choice needs it: check GitHub
    Pages with `gh api repos/<owner>/<repo>/pages --jq .build_type`; if it is
    not `workflow`, enable it (`gh api -X POST repos/<owner>/<repo>/pages -f build_type=workflow`).
@@ -72,11 +77,13 @@ an active feature, this is a resume: skip to **Status** and then **Next round**.
    until then.
 6. **Interview** with the `grilling` skill: product decisions only, frontier
    by frontier, until nothing is silently assumed. Look facts up yourself.
-7. Commit the setup (`chore: set up <product name> from mvp-starter`), create
-   the feature branch, and follow `BOOTSTRAP-PROMPT.md` "What the team does
-   next" (specify → clarify → plan → tasks → analyze → implement to the first
-   checkpoint). Tell the owner, in two sentences, what you are doing and that
-   the first review round will come with a link to click.
+7. Create the feature branch first (`001-<short-name>`, sequential
+   numbering; the lead branches, Spec Kit does not), then commit the setup
+   on it (`chore: set up <product name> from mvp-starter`), and follow
+   `BOOTSTRAP-PROMPT.md` "For the team (engine instructions)", NEW PRODUCT
+   steps 2–6 (the interview was step 1). Tell the owner, in two sentences,
+   what you are doing and that the first review round will come with a link
+   to click.
 
 ## Status
 

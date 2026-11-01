@@ -1,6 +1,6 @@
 # Retro notes
 
-Written by the team after each accepted checkpoint (`AGENTS.md`, handoff step
+Written by the team after each accepted checkpoint (at least after "Ready to accept") (`AGENTS.md`, handoff step
 9): three to five bullets per entry on what slowed the team down, which template
 rule would have helped, and which rule was unclear or contradicted another. The
 owner can send an entry upstream with "send the retro" (`team` skill): the
