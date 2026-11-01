@@ -121,7 +121,7 @@ human decision recorded in `docs/STATUS.md`.
 
 ### C1 GATE
 
-- [ ] T011 [GATE] C1 checkpoint: run `pnpm verify`; start `pnpm dev --host 127.0.0.1 --port 5173 --strictPort` and confirm the URL responds; update docs/STATUS.md (checkpoint, spec IDs, commands and outcomes, URL and who can reach it, questions, next action) and the spec in the same commit; write the human gate page specs/[###-feature-name]/review/C1.md from docs/templates/gate-review.md (≤3 review steps); commit; then **STOP** and wait for an explicit human decision. Do not start later phases until docs/STATUS.md records approval.
+- [ ] T011 [GATE] C1 checkpoint (owner-facing: "First working slice"): run `pnpm verify`; start `pnpm dev --host 127.0.0.1 --port 5173 --strictPort` and confirm the URL responds; draft the round report from docs/templates/round-report.md (≤3 owner steps); run the `reviewer` subagent (code review plus walk-through of the owner steps with screenshots) and fix blockers; save the report as specs/[###-feature-name]/review/round-<k>.md; update docs/STATUS.md (checkpoint, round counter, next action) and the spec in the same commit, and append evidence to docs/journal/[###-feature-name].md; commit; post the report in chat; then **STOP** and wait for an explicit owner decision. Do not start later phases until docs/STATUS.md records approval.
 
 ---
 
@@ -143,7 +143,7 @@ human decision recorded in `docs/STATUS.md`.
 
 ### C2 GATE
 
-- [ ] T016 [GATE] C2 checkpoint: same procedure as T011 for US1–US2; **STOP** for an explicit human decision.
+- [ ] T016 [GATE] C2 checkpoint (owner-facing: "Solid and usable"): same procedure as T011 for US1–US2; **STOP** for an explicit owner decision.
 
 ---
 
@@ -159,7 +159,7 @@ human decision recorded in `docs/STATUS.md`.
 - [ ] TXXX [P] [ROUTINE] Localization pass: no user-facing strings outside src/ui/i18n/, `Intl` formatting, layouts tolerate longer text at mobile width
 - [ ] TXXX Run quickstart.md validation
 - [ ] TXXX Document known limits and exact restart/resume steps in docs/STATUS.md and README.md
-- [ ] TXXX [GATE] C3 checkpoint: same procedure as T011; request explicit acceptance. **STOP**; never mark accepted without a recorded human decision.
+- [ ] TXXX [GATE] C3 checkpoint (owner-facing: "Ready to accept"): same procedure as T011; request explicit acceptance. **STOP**; never mark accepted without a recorded owner decision. After acceptance: write the retro entry (docs/retro.md) and offer to send it upstream.
 
 ---
 
@@ -202,9 +202,12 @@ human decision recorded in `docs/STATUS.md`.
 - Light: Setup/Foundational (only if needed) → stories in priority order → Polish → C3 GATE, **STOP**
 - Spike: the open question end to end → C1 GATE with go/no-go and evidence, **STOP**; the human decides whether it continues as Light or Full
 
-Human feedback at a gate updates spec.md (via `/speckit-clarify` or a direct
-edit with stable IDs), then `/speckit-tasks` or `/speckit-converge` refreshes
-remaining work before implementation resumes.
+Owner feedback at a gate is recorded by the team in
+specs/[###-feature-name]/feedback/round-<k>.md (owner's words quoted, global
+rNN ids), then updates spec.md (via `/speckit-clarify` or a direct edit with
+stable IDs, decisions also as dated bullets under `## Clarifications`), then
+`/speckit-tasks` or `/speckit-converge` refreshes remaining work before
+implementation resumes.
 
 ---
 
